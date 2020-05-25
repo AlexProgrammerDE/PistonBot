@@ -11,7 +11,9 @@ module.exports = function(bot, config) {
 
   bot.on('playerCollect', function(collector, item) {
     try {
-      var itemId = item.metadata['10'].blockId;
+      var metadata = item.metadata;
+	  var itemId = metadata[metadata.length - 1].blockId
+	  
       if(collector.username === bot.username && isArmor(itemId)) {
         // Little delay to receive inventory
         setTimeout(function() {
@@ -21,6 +23,7 @@ module.exports = function(bot, config) {
     } catch(err) {
       if(config.logging) {
         console.log('Failed to retrive block id, probably exp bottle');
+		console.log(err);
       }
     }
   });
