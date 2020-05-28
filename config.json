@@ -1,7 +1,5 @@
 {
-	"ingamepassword":"password",
-	"username":"PistonBot",
-	"MCversion":"1.12.2",
-	"host":"localhost",
-	"port":"25565"
+  "MCversion":"1.12.2",
+  "host":"6b6t.org",
+  "port":"25565"
 }

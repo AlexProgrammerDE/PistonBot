@@ -24,6 +24,7 @@
     "minecraft-protocol": "^1.12.0",
     "mineflayer": "^2.15.0",
     "mineflayer-navigate": "0.0.10",
-    "mineflayer-tps": "^1.0.1"
+    "mineflayer-tps": "^1.0.1",
+    "rookout": "^0.1.91"
   }
 }

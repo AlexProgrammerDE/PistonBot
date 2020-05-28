@@ -1,0 +1,17 @@
+{
+  "coords":true,
+  "tps":true,
+  "navigation":true,
+  "ping":true,
+  "help":true,
+  "tp":true,
+  "rules":true,
+  "ny":true,
+  "report":true,
+  "bible":true,
+  "about":true,
+  "armor":true,
+  "turn":true,
+  "bchelp":true,
+  "spam":false
+}

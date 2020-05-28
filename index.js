@@ -5,11 +5,13 @@ var Vec3 = require('vec3').Vec3;
 const navigatePlugin = require('mineflayer-navigate')(mineflayer);
 const bible = require('./data/bible');
 const commands = require('./data/commands');
-var mirror = false;
+const secrets = require('./secrets.json');
+const modules = require('./modules.json');
+const spam = require('./data/spam');
 
 var bot = mineflayer.createBot({
   host: config.host,
-  username: config.username,
+  username: secrets.username,
   port: config.port,
   version: config.MCversion
 });
@@ -23,22 +25,23 @@ navigatePlugin(bot);
 bot.loadPlugin(tpsPlugin);
 
 bot.on('chat', function(username, message) {
-  console.log(message);
+  console.log(username + " " + message);
   
   if (username === undefined) return;
   
   if (username === bot.username) return;
   
-  if (message == '_coords') {
+  if (message === '_coords' && modules.coords) {
 	var pos = Number.parseInt(bot.entity.position.x);
 	
 	bot.chat("My coords are: " + Number.parseInt(bot.entity.position.x) + " " + Number.parseInt(bot.entity.position.y) + " " + Number.parseInt(bot.entity.position.z));
   }
   
-  if (message == '_tps') {
+  if (message === '_tps' && modules.tps) {
     bot.chat('Current tps: ' + bot.getTps())
   }
   
+  if (modules.navigation) {
   if (message === '_come') {
 	if (bot.players[username].entity == null) {
 		bot.chat(username + " it seems like your out of range.");
@@ -53,7 +56,22 @@ bot.on('chat', function(username, message) {
     bot.navigate.stop();
   }
   
-  if (message.startsWith('_ping')) {
+  if (message.startsWith('_goto')) {
+	var messages = message.split(" ");
+	
+	if (messages.length === 4) {
+		var targetpos = new Vec3(messages[1], messages[2], messages[3]);
+		
+		bot.chat("Trying to get to: " + messages[1] + " " + messages[2] + " " + messages[3]);
+		
+		bot.navigate.to(targetpos);
+	} else {
+		bot.chat("Sorry you didnt use: _goto x y z");
+	}
+  }
+  }
+  
+  if (message.startsWith('_ping') && modules.ping) {
 	if (message === '_ping') {
 	  if (bot.players[username]) {
 	    bot.chat(username + " your ping is: " + bot.players[username].ping);
@@ -84,24 +102,11 @@ bot.on('chat', function(username, message) {
 	}
   }
   
-  if (message.startsWith('_goto')) {
-	var messages = message.split(" ");
-	
-	if (messages.length === 4) {
-		var targetpos = new Vec3(messages[1], messages[2], messages[3]);
-		
-		bot.chat("Trying to get to: " + messages[1] + " " + messages[2] + " " + messages[3]);
-		
-		bot.navigate.to(targetpos);
-	} else {
-		bot.chat("Sorry you didnt use: _goto x y z");
-	}
-  }
-  
-  if (message === '_help') {
+  if (message === '_help' && modules.help) {
 	bot.chat("PistonBot help: _tps, _ping, _goto, _come, _stop, _coords, _tpa, _tpy, _rules, _report, _bible, _about");
   }
   
+  if (modules.tpa) {
   if (message.startsWith('_tpa')) {
     var messages = message.split(" ");
 	
@@ -121,20 +126,23 @@ bot.on('chat', function(username, message) {
 		bot.chat("Sorry you should use: _tpy username");
 	}
   }
+  }
   
-  if (message === '_rules') {
+  if (message === '_rules' && modules.rules) {
     bot.chat("No rules, but pls don't spam, hack, dupe, xray, swear or grief.");
   }
   
-    if (message === '_no') {
+  if (modules.ny) {
+  if (message === '_no') {
     bot.chat("NO!");
   }
   
   if (message === '_yes') {
     bot.chat("YES!");
   }
+  }
   
-  if (message.startsWith('_report')) {
+  if (message.startsWith('_report') && modules.report) {
     var messages = message.split(" ");
 	
 	if (messages.length >= 3) {
@@ -144,12 +152,14 @@ bot.on('chat', function(username, message) {
 	}
   }
   
+  if (modules.bible) {
   if (message === '_bible' || message === '_verse') {
-    bot.chat(bible.proverbs[Math.round(Math.random() * 27)]);
+    bot.chat(bible.proverbs[Math.round(Math.random() * (bible.proverbs.length - 1))]);
+  }
   }
   
-  if (message === '_about') {
-    bot.chat("PistonBot coded by Pistonmaster with <3.");
+  if (message === '_about' && modules.about) {
+    bot.chat("PistonBot coded by Pistonmaster with <3!");
   }
   
   if (message.startsWith('_say') && username === 'Pistonmaster') {
@@ -161,14 +171,10 @@ bot.on('chat', function(username, message) {
   if (message === '_killbot' && username === 'Pistonmaster') {	
 	bot.chat("/kill");
   }
-  
-  if (message === 'test') {
-    console.log(bot.inventory.items());
-  }
 });
 
 bot.on('login', function() {
-  bot.chat("/login " + config.ingamepassword);
+  bot.chat("/login " + secrets.ingamepassword);
   
   console.log("I spawned and set everything up.");
 });
@@ -190,9 +196,18 @@ bot.navigate.on('interrupted', function() {
   bot.chat("stopping");
 });
 
-let interval = setInterval(() => {
-  bot.chat(commands.bc[Math.round(Math.random() * 16)]);
-}, 60000)
+if (modules.spam) {
+  let spambc = setInterval(() => {
+  bot.chat(spam.txt[Math.round(Math.random() * (spam.txt.length - 1))]);
+  }, 30000)	
+}
+
+if (modules.bchelp) {
+let helpbc = setInterval(() => {
+  bot.chat(commands.bc[Math.round(Math.random() * (commands.bc.length - 1))]);
+  
+}, 120000)
+}
 
 bot.on('kicked', function(reason) {
   console.log("I got kicked for " + reason);

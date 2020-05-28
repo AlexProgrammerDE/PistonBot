@@ -10,7 +10,6 @@ module.exports = {
   'Use "_tpa username" to send a tpa request to a specific player! (I need to be 1000 blocks away from spawn to do this.)', 
   'Use "_tpy username" to let me accept the tpa request of a player!', 
   'Use "_rules" to see the rules of the server!', 
-  'Use "_no" to let me disagree!',
   'Use "_yes" to let me agree!',
   'Use "_no" to let me disagree!',
   'Use "_report username reason" to report a player!',
