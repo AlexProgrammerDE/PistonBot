@@ -2,12 +2,17 @@ var mineflayer = require('mineflayer');
 const config = require('./config.json');
 var tpsPlugin = require('mineflayer-tps')(mineflayer);
 var Vec3 = require('vec3').Vec3;
-const navigatePlugin = require('mineflayer-navigate')(mineflayer);
+const pathfinder = require('mineflayer-pathfinder').pathfinder;
+const Movements = require('mineflayer-pathfinder').movements;
 const bible = require('./data/bible');
 const commands = require('./data/commands');
 const secrets = require('./secrets.json');
 const modules = require('./modules.json');
 const spam = require('./data/spam');
+const foodType = [260, 282, 297, 320, 322, 357, 360, 364, 366, 391, 393, 396, 412, 424];
+var isEating = false;
+const weapons = [276, 283, 267, 272, 268];
+var fs = require('fs');
 
 var bot = mineflayer.createBot({
   host: config.host,
@@ -21,11 +26,19 @@ require('./armor-manager')(bot, {
   version: 1.12
 });
 
-navigatePlugin(bot);
+bot.loadPlugin(pathfinder);
 bot.loadPlugin(tpsPlugin);
 
 bot.on('chat', function(username, message) {
+
+  const mcData = require('minecraft-data')(bot.version)
+  const defaultMove = new Movements(bot, mcData)
+
   console.log(username + " " + message);
+  
+  if (message.includes("/login")) {
+    bot.chat("/login " + secrets.ingamepassword); 
+  }
   
   if (username === undefined) return;
   
@@ -42,33 +55,31 @@ bot.on('chat', function(username, message) {
   }
   
   if (modules.navigation) {
-  if (message === '_come') {
-	if (bot.players[username].entity == null) {
+    if (message === '_come') {
+	  if (bot.players[username] == undefined || bot.players[username].entity == null) {
 		bot.chat(username + " it seems like your out of range.");
-	} else {
-		const target = bot.players[username].entity;
-		bot.chat("Starting following " + username + ".")
-		bot.navigate.to(target.position);
+	  } else {
+	   	const target = bot.players[username].entity;
+		bot.chat("Going to " + username + ".")
+		
+        const p = target.position
+		
+		bot.pathfinder.setMovements(defaultMove)
+        bot.pathfinder.setGoal(new GoalNear(p.x, p.y, p.z, 1))
+	  }
 	}
-  }
   
-  if (message === '_stop') {
-    bot.navigate.stop();
-  }
-  
-  if (message.startsWith('_goto')) {
-	var messages = message.split(" ");
+    if (message.startsWith('_goto')) {
+	  var messages = message.split(" ");
 	
-	if (messages.length === 4) {
-		var targetpos = new Vec3(messages[1], messages[2], messages[3]);
+	  if (messages.length === 4) {
+	   	  var targetpos = new Vec3(messages[1], messages[2], messages[3]);
 		
-		bot.chat("Trying to get to: " + messages[1] + " " + messages[2] + " " + messages[3]);
-		
-		bot.navigate.to(targetpos);
-	} else {
+		  bot.chat("Trying to get to: " + messages[1] + " " + messages[2] + " " + messages[3]);
+	  } else {
 		bot.chat("Sorry you didnt use: _goto x y z");
-	}
-  }
+	  }
+    }
   }
   
   if (message.startsWith('_ping') && modules.ping) {
@@ -103,15 +114,20 @@ bot.on('chat', function(username, message) {
   }
   
   if (message === '_help' && modules.help) {
-	bot.chat("PistonBot help: _tps, _ping, _goto, _come, _stop, _coords, _tpa, _tpy, _rules, _report, _bible, _about");
+	bot.chat("PistonBot help: _tps, _ping, _coords, _tpa, _tpy, _rules, _report, _bible, _about");
+    // _goto, _come, _stop,
   }
   
-  if (modules.tpa) {
+  if (modules.tp) {
   if (message.startsWith('_tpa')) {
     var messages = message.split(" ");
 	
 	if (messages.length === 2) {
-		bot.chat("/tpa " + messages[1]);
+		if (Number.parseInt(bot.entity.position.x) >= 1000 || Number.parseInt(bot.entity.position.x) >= 1000) {
+		  bot.chat("/tpa " + messages[1]);
+		} else {
+		  bot.chat("Sorry i am not 1000 blocks away from spawn. :(");	
+		}
 	} else {
 		bot.chat("Sorry you should use: _tpa username");
 	}
@@ -179,23 +195,6 @@ bot.on('login', function() {
   console.log("I spawned and set everything up.");
 });
 
-bot.navigate.on('pathFound', function (path) {
-  bot.chat("found path. I can get there in " + path.length + " moves.");
-});
-
-bot.navigate.on('cannotFind', function (closestPath) {
-  bot.chat("unable to find path. getting as close as possible");
-  bot.navigate.walk(closestPath);
-});
-
-bot.navigate.on('arrived', function () {
-  bot.chat("I have arrived");
-});
-
-bot.navigate.on('interrupted', function() {
-  bot.chat("stopping");
-});
-
 if (modules.spam) {
   let spambc = setInterval(() => {
   bot.chat(spam.txt[Math.round(Math.random() * (spam.txt.length - 1))]);
@@ -211,14 +210,37 @@ let helpbc = setInterval(() => {
 
 bot.on('kicked', function(reason) {
   console.log("I got kicked for " + reason);
+  
+  process.exit(0);
+});
+
+bot.on('end', function(reason) {
+  console.log("I end now: " + reason);
+  
+  process.exit(0);
 });
 
 bot.on('time', function() {
-  /* if (bot.food != 20) {
+  if (isEating == false && (bot.food != 20)) {
+	var food = checkFood(bot.inventory);
 	
+	if (food) {
+	  console.log(food);
+	  bot.equip(food, "hand");
+	  isEating = true;
+	  bot.consume(function() {isEating = false});
+	}
   }
-  bot.consume(err => console.log(err)) */
+  
+  if (isEating == false) {
+	var weapon = checkWeapon(bot.inventory);
 	
+	if (weapon) {
+	  console.log(weapon);
+	  bot.equip(weapon, "hand");
+	}
+  }
+  
   var entity = nearestEntity();
   if(entity) {
 	if (entity.type === 'player') {
@@ -226,6 +248,15 @@ bot.on('time', function() {
 	} else if (entity.type === 'mob') {
 	  bot.lookAt(entity.position);
 	}
+	
+	if (entity.type === "mob" && entity.kind === "Hostile mobs") {
+	  bot.attack(entity);
+	}
+  }
+  
+  var totem = bot.inventory.findInventoryItem(449, null);
+  if (totem && totem.type == 449) {
+	bot.equip(totem, "off-hand");
   }
 });
 
@@ -246,4 +277,33 @@ function nearestEntity(type) {
     }
   }
   return best;
+}
+
+function checkFood(window) {  
+  var food = null;
+  
+  window.items().forEach(Item => {	
+    if (foodType.includes(Item.type)) {
+	  food = Item;
+	}
+  });
+    
+  return food;
+}
+
+function checkWeapon(window) {  
+  var index = weapons.length;
+  var weapon = null;
+
+  window.items().forEach(Item => {	
+    if (weapons.includes(Item.type)) {
+	  if (weapons.indexOf(Item.type) < index) {
+		index = weapons.indexOf(Item.type);
+		
+		weapon = Item;
+	  }
+	}
+  });
+    
+  return weapon;
 }

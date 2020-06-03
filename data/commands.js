@@ -2,10 +2,10 @@ module.exports = {
   bc: [
   'Use "_coords" to get my coordinates!', 
   'Use "_tps" to see the tps!', 
-  'Use "_come username" to tell me to which player, which is in my range i should navigate to!', 
-  'Use "_stop" to stop my current navigation!', 
+  'Give me food! I need it to survive in this "nice" server!',
+  'I need a sword! Or i cant kill hostile mobs very efficient.',
+  'Give me totems! A Bot can die multiple times, but with them im immortal.',
   'Use "_ping username" or just "_ping" to get the ping of yourself or other players!', 
-  'Use "_goto x y z" to tell me where i should navigate to!', 
   'Use "_help" to get a list of all my commands!', 
   'Use "_tpa username" to send a tpa request to a specific player! (I need to be 1000 blocks away from spawn to do this.)', 
   'Use "_tpy username" to let me accept the tpa request of a player!', 
@@ -15,6 +15,12 @@ module.exports = {
   'Use "_report username reason" to report a player!',
   'Use "_bible" or "_verse" to get a line from the bible!',
   'Use "_about" to get some information about the bot!',
-  'Please give me some armor! I can automatic wear them and switch to better.'
+  'Give me some armor! I can automatic wear them and switch to better.'
   ]
 };
+
+/*
+  'Use "_stop" to stop my current navigation!', 
+  'Use "_come username" to tell me to which player, which is in my range i should navigate to!', 
+  'Use "_goto x y z" to tell me where i should navigate to!', 
+*/
