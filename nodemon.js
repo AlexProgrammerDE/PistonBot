@@ -1,11 +1,16 @@
-var nodemon = require('nodemon');
+var nodemon = require('nodemon')
 
-nodemon({ script: './index.js' }).on('start', function () {
-  console.log('nodemon started');
+nodemon({
+  script: 'index.js',
+  ignore: 'data/*'
+})
+
+nodemon.on('start', function () {
+  console.log('nodemon started')
 }).on('crash', function () {
-  console.log('script crashed for some reason. Restarting...');
-  nodemon.emit('restart');
+  console.log('script crashed for some reason. Restarting...')
+  nodemon.emit('restart')
 }).on('exit', function () {
-  console.log('script exited for some reason. Restarting...');
-  nodemon.emit('restart');
-});
+  console.log('script exited for some reason. Restarting...')
+  nodemon.emit('restart')
+})
