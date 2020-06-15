@@ -2,9 +2,12 @@
   "name": "pistonbot",
   "version": "1.0.0",
   "description": "\u0016My own minecraft bot.",
-  "main": "./index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node ./nodemon.js"
+    "start": "node ./nodemon.js",
+    "pretest": "npm run lint && require-self",
+    "lint": "standard",
+    "fix": "standard --fix"
   },
   "repository": {
     "type": "git",
@@ -21,12 +24,16 @@
   },
   "homepage": "https://github.com/AlexProgrammerDE/PistonBot#readme",
   "dependencies": {
-    "minecraft-data": "^2.53.0",
-    "minecraft-protocol": "^1.12.0",
-    "mineflayer": "PrismarineJS/mineflayer#master",
-    "mineflayer-pathfinder": "^1.0.2",
+    "express": "^4.17.1",
+    "minecraft-data": "^2.54.0",
+    "minecraft-protocol": "^1.12.1",
+    "mineflayer": "^2.19.0",
+    "mineflayer-pathfinder": "^1.0.4",
     "mineflayer-tps": "^1.0.1",
+    "mocha": "^8.0.1",
     "nodemon": "^2.0.4",
-    "rookout": "^0.1.91"
+    "require-self": "^0.2.3",
+    "standard": "^14.3.4",
+    "urban-dictionary": "^2.2.1"
   }
 }

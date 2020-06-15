@@ -7,4 +7,4 @@ module.exports = {
     diamond: 310
   },
   destinations: ['head', 'torso', 'legs', 'feet']
-};
+}

@@ -1,7 +1,7 @@
 {
   "coords":true,
   "tps":true,
-  "navigation":false,
+  "navigation":true,
   "ping":true,
   "help":true,
   "tp":true,
@@ -10,8 +10,12 @@
   "report":true,
   "bible":true,
   "about":true,
-  "armor":false,
+  "armor":true,
   "turn":true,
   "bchelp":true,
-  "spam":false
+  "spam":false,
+  "eat":true,
+  "attack":true,
+  "totem":true,
+  "web":false
 }
