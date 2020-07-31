@@ -1,5 +1,6 @@
 {
   "MCversion":"1.12.2",
-  "host":"localhost",
-  "port":"25565"
+  "host":"6b6t.org",
+  "port":25565,
+  "bridge":"738497579624431686"
 }

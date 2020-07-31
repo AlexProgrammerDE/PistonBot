@@ -17,5 +17,6 @@
   "eat":true,
   "attack":true,
   "totem":true,
-  "web":false
+  "web":true,
+  "gamemode":true
 }
