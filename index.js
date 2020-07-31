@@ -94,7 +94,10 @@ function text (username, message, whisper) {
 
   if (username === bot.username) return
 
-  client.channels.cache.get(config.bridge).send(username + ': ' + message)
+  if (client.channels.cache.get(config.bridge) !== undefined) {
+    var bridge = username + ': ' + message
+    client.channels.cache.get(config.bridge).send(bridge.replace('@', '(at)'))
+  }
 
   if (whisper) {
     prefix = '/tell ' + username + ' '
@@ -246,6 +249,7 @@ function text (username, message, whisper) {
 
   if (message.startsWith('_discord')) {
     bot.chat(prefix + 'https://discord.gg/zBPKyC5')
+    executed = true
   }
 
   if (modules.tp) {
@@ -665,8 +669,8 @@ client.on('ready', () => {
     status: 'online',
     activity: {
       type: 'PLAYING',
-      url: 'https://6b6t.org',
-      name: '6b6t.org | _help',
+      url: config.website,
+      name: config.status,
       application: {
         id: '712245398269329511'
       }
