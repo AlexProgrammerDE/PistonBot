@@ -1,8 +1,20 @@
 {
-  "MCversion":"1.12.2",
-  "host":"6b6t.org",
-  "port":25565,
-  "bridge":"738497579624431686",
-  "website":"https://6b6t.org",
-  "status":"6b6t.org | _help"
+  "6b6t": {
+    "MCversion":"1.12.2",
+    "host":"6b6t.org",
+    "port":25565,
+    "bridge":"738497579624431686"
+  },
+  "l2x9": {
+    "MCversion":"1.12.2",
+    "host":"l2x9.org",
+    "port":25565,
+    "bridge":"738497579624431686"
+  },
+  "mineflayer": {
+    "MCversion":"1.16.1",
+    "host":"mf.a68agaming.net",
+    "port":25565,
+    "bridge":"738497579624431686"
+  }
 }

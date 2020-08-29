@@ -4,7 +4,7 @@
   "description": "\u0016My own minecraft bot.",
   "main": "index.js",
   "scripts": {
-    "start": "node ./nodemon.js",
+    "start": "node ./nodemon.js 6b6t",
     "fix": "standard --fix"
   },
   "repository": {

@@ -1,12 +1,13 @@
 var mineflayer = require('mineflayer')
-const config = require('./config.json')
+const config = require('./config.json')[process.argv[2]]
+const discordconfig = require('./discord.json')
 var tpsPlugin = require('mineflayer-tps')(mineflayer)
 const pathfinder = require('mineflayer-pathfinder').pathfinder
 const Movements = require('mineflayer-pathfinder').Movements
 const { GoalNear, GoalBlock, GoalXZ, GoalY, GoalFollow } = require('mineflayer-pathfinder').goals
 const bible = require('./data/bible')
 const commands = require('./data/commands')
-const secrets = require('./secrets.json')
+const secrets = require('./secrets.json')[process.argv[2]]
 const modules = require('./modules.json')
 const spam = require('./data/spam')
 const inventoryViewer = require('mineflayer-web-inventory')
@@ -22,7 +23,7 @@ const ud = require('urban-dictionary')
 const armorManager = require('mineflayer-armor-manager')
 const viewer = require('prismarine-viewer').mineflayer
 const Discord = require('discord.js')
-const client = new Discord.Client()
+const client = new Discord.Client({ disableEveryone: true })
 
 var bot = mineflayer.createBot({
   host: config.host,
@@ -58,8 +59,8 @@ bot.loadPlugin(tpsPlugin)
 bot.loadPlugin(armorManager)
 
 bot.once('spawn', () => {
-  viewer(bot, { port: 3001 })
-  inventoryViewer(bot, { port: 3002 })
+  viewer(bot, { port: 80 })
+  inventoryViewer(bot, { port: 8880 })
 
   // Draw the path followed by the bot
   const path = [bot.entity.position.clone()]
@@ -332,17 +333,17 @@ function text (username, message, whisper) {
     if (Object.keys(playerjoin).includes(username)) {
       console.log('Player is in the database. Reading the state.')
       if (playerjoin[username]) {
-        console.log('messagesplit are true. Setting to false.')
+        console.log('message are true. Setting to false.')
         playerjoin[username] = false
-        bot.chat(prefix + 'Deactivated welcome messagesplit. You can toggle them with: _wm')
+        bot.chat(prefix + 'Deactivated welcome message. You can toggle them with: _wm')
       } else {
-        console.log('messagesplit are false. Setting to true.')
+        console.log('message are false. Setting to true.')
         playerjoin[username] = true
-        bot.chat(prefix + 'Activated welcome messagesplit. You can toggle them with: _wm')
+        bot.chat(prefix + 'Activated welcome message. You can toggle them with: _wm')
       }
     } else {
       console.log('Player is not in the database. Adding the player and setting it to true.')
-      bot.chat(prefix + 'Activated welcome messagesplit. You can toggle them with: _wm')
+      bot.chat(prefix + 'Activated welcome message. You can toggle them with: _wm')
       playerjoin[username] = true
     }
 
@@ -466,8 +467,12 @@ function text (username, message, whisper) {
 
     if (executed === false) {
       if (Object.keys(playerdata).includes(username)) {
-        console.log('Player is in the database. Adding the message.')
-        playerdata[username].push(message)
+        if (playerdata[username].includes(message)) {
+          console.log('That message is already in the database. Not adding it.')
+        } else {
+          console.log('Player is in the database. Adding the message.')
+          playerdata[username].push(message)
+        }
       } else {
         console.log('Player is not in the database. Adding the player and the message to the database.')
         playerdata[username] = [message]
@@ -478,7 +483,7 @@ function text (username, message, whisper) {
         if (err) {
           console.log(err)
         }
-        console.log('Saved playerdata.')
+        console.log('Added the message.')
         isWriting = false
       })
     }
@@ -500,7 +505,7 @@ if (modules.web) {
     res.send(JSON.stringify(playerdata))
   })
 
-  app.listen(3003)
+  app.listen(8080)
 }
 
 bot.on('login', function () {
@@ -574,9 +579,10 @@ bot.once('spawn', function () {
 
   setInterval(() => {
     if (end && !isWriting) {
+      console.log('Ending ...')
       process.exit(0)
     }
-  }, 100)
+  }, 1000)
 })
 
 if (modules.spam) {
@@ -669,8 +675,8 @@ client.on('ready', () => {
     status: 'online',
     activity: {
       type: 'PLAYING',
-      url: config.website,
-      name: config.status,
+      url: discordconfig.website,
+      name: discordconfig.status,
       application: {
         id: '712245398269329511'
       }
@@ -732,11 +738,11 @@ client.on('message', msg => {
       bot.chat(msg.author.username + '#' + msg.author.discriminator + ' ' + message)
     }
   } else if (msg.content.startsWith('_help')) {
-    msg.reply('PistonBot Discord help: _sendmessage, _help, _discord')
+    msg.reply('PistonBot Discord help:  _help, _discord')
   } else if (msg.channel.id === config.bridge && msg.member.user !== client.user) {
     bot.chat('> [ChatBridge] ' + msg.author.username + ': ' + msg.content)
   } else if (msg.content.startsWith('_discord')) {
-    msg.reply('PistonBot Discord: https://discord.gg/zBPKyC5')
+    msg.reply('PistonBot Discord: https://discord.gg/9hNWscq')
   }
 })
 
