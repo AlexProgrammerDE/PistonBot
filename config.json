@@ -9,12 +9,18 @@
     "MCversion":"1.12.2",
     "host":"l2x9.org",
     "port":25565,
-    "bridge":"738497579624431686"
+    "bridge":"750723465404874813"
   },
-  "mineflayer": {
-    "MCversion":"1.16.1",
-    "host":"mf.a68agaming.net",
+  "10b10t": {
+    "MCversion":"1.12.2",
+    "host":"10b10t.org",
     "port":25565,
-    "bridge":"738497579624431686"
+    "bridge":"749687287805247608"
+  },
+  "5b5t": {
+    "MCversion":"1.12.2",
+    "host":"5b5t.ga",
+    "port":25565,
+    "bridge":"749993454532165765"
   }
 }

@@ -1,5 +1,6 @@
 var mineflayer = require('mineflayer')
-const config = require('./config.json')[process.argv[2]]
+const server = process.argv[2]
+const config = require('./config.json')[server]
 const discordconfig = require('./discord.json')
 var tpsPlugin = require('mineflayer-tps')(mineflayer)
 const pathfinder = require('mineflayer-pathfinder').pathfinder
@@ -7,8 +8,8 @@ const Movements = require('mineflayer-pathfinder').Movements
 const { GoalNear, GoalBlock, GoalXZ, GoalY, GoalFollow } = require('mineflayer-pathfinder').goals
 const bible = require('./data/bible')
 const commands = require('./data/commands')
-const secrets = require('./secrets.json')[process.argv[2]]
-const modules = require('./modules.json')
+const secrets = require('./secrets.json')[server]
+const modules = require('./modules.json')[server]
 const spam = require('./data/spam')
 const inventoryViewer = require('mineflayer-web-inventory')
 var isEating = false
@@ -24,6 +25,7 @@ const armorManager = require('mineflayer-armor-manager')
 const viewer = require('prismarine-viewer').mineflayer
 const Discord = require('discord.js')
 const client = new Discord.Client({ disableEveryone: true })
+const time = 10
 
 var bot = mineflayer.createBot({
   host: config.host,
@@ -58,21 +60,38 @@ bot.loadPlugin(pathfinder)
 bot.loadPlugin(tpsPlugin)
 bot.loadPlugin(armorManager)
 
-bot.once('spawn', () => {
-  viewer(bot, { port: 80 })
-  inventoryViewer(bot, { port: 8880 })
-
-  // Draw the path followed by the bot
-  const path = [bot.entity.position.clone()]
-  bot.on('move', () => {
-    if (path[path.length - 1].distanceTo(bot.entity.position) > 1) {
-      path.push(bot.entity.position.clone())
-      bot.viewer.drawLine('path', path)
+bot.on('spawn', function () {
+  fs.writeFile('./time.txt', time.toString(), function (err) {
+    if (err) {
+      console.log(err)
     }
   })
 })
 
+bot.once('spawn', () => {
+  if (modules.inventory.activated) {
+    inventoryViewer(bot, { port: modules.inventory.port })
+  }
+
+  if (modules.viewer.activated) {
+    viewer(bot, { port: modules.viewer.port })
+    // Draw the path followed by the bot
+    const path = [bot.entity.position.clone()]
+    bot.on('move', () => {
+      if (path[path.length - 1].distanceTo(bot.entity.position) > 1) {
+        path.push(bot.entity.position.clone())
+        bot.viewer.drawLine('path', path)
+      }
+    })
+  }
+})
+
 function text (username, message, whisper) {
+  fs.writeFile('./time.txt', time.toString(), function (err) {
+    if (err) {
+      console.log(err)
+    }
+  })
   var executed = false
   var prefix
   var messagesplit = message.split(' ')
@@ -96,14 +115,24 @@ function text (username, message, whisper) {
   if (username === bot.username) return
 
   if (client.channels.cache.get(config.bridge) !== undefined) {
-    var bridge = username + ': ' + message
-    client.channels.cache.get(config.bridge).send(bridge.replace('@', '(at)'))
+    var embed = new Discord.MessageEmbed()
+      .setColor('#C970D9')
+      .setURL('https://github.com/AlexProgrammerDE/PistonBot')
+      .addField(username.replace('@', '(at)'), message.replace('@', '(at)'), true)
+      .setTimestamp()
+      .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
+    client.channels.cache.get(config.bridge).send(embed)
   }
 
   if (whisper) {
     prefix = '/tell ' + username + ' '
   } else {
     prefix = ''
+  }
+
+  if (message.startsWith('_hi') && modules.hi) {
+    bot.chat('Hi ' + username + '! Nice to meet you! <3')
+    executed = true
   }
 
   if (message.startsWith('_coords') && modules.coords) {
@@ -244,12 +273,12 @@ function text (username, message, whisper) {
   }
 
   if (message.startsWith('_help') && modules.help) {
-    bot.chat(prefix + 'PistonBot help: _tps, _ping, _coords, _tpa, _tpy, _rules, _report, _bible, _about, _goto, _come, _stop, _rm, _lm, _fm, _wm, _urban, _discord')
+    bot.chat('/tell ' + username + ' PistonBot help: _tps, _ping, _coords, _tpa, _tpy, _rules, _report, _bible, _about, _goto, _come, _stop, _rm, _lm, _fm, _wm, _urban, _discord')
     executed = true
   }
 
   if (message.startsWith('_discord')) {
-    bot.chat(prefix + 'https://discord.gg/zBPKyC5')
+    bot.chat('/tell ' + username + 'discord.gg/zBPKyC5')
     executed = true
   }
 
@@ -498,14 +527,14 @@ bot.on('whisper', function (username, message, a, jsonMsg) {
   text(username, message, true)
 })
 
-if (modules.web) {
+if (modules.web.activated) {
   app.use('/', (req, res) => {
     var playerdata = require('./data/playerdata.json')
 
     res.send(JSON.stringify(playerdata))
   })
 
-  app.listen(8080)
+  app.listen(modules.web.port)
 }
 
 bot.on('login', function () {
@@ -576,13 +605,6 @@ bot.once('spawn', function () {
       }
     }
   }, 300)
-
-  setInterval(() => {
-    if (end && !isWriting) {
-      console.log('Ending ...')
-      process.exit(0)
-    }
-  }, 1000)
 })
 
 if (modules.spam) {
@@ -596,6 +618,13 @@ if (modules.bchelp) {
     bot.chat(commands.bc[Math.round(Math.random() * (commands.bc.length - 1))])
   }, 120000)
 }
+
+setInterval(() => {
+  if (end && !isWriting) {
+    console.log('Ending ...')
+    process.exit(0)
+  }
+}, 1000)
 
 bot.on('kicked', function (reason) {
   console.log('I got kicked for ' + reason)
@@ -668,6 +697,31 @@ function checkWeapon (window) {
   return weapon
 }
 
+// REALLY BUGGY
+/* bot.on('playerJoined', function (player) {
+  if (client.channels.cache.get(config.bridge) !== undefined) {
+    var embed = new Discord.MessageEmbed()
+      .setColor('#C970D9')
+      .setURL('https://github.com/AlexProgrammerDE/PistonBot')
+      .addField('Player joined the game:', player.username.replace('@', '(at)'), true)
+      .setTimestamp()
+      .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
+    client.channels.cache.get(config.bridge).send(embed)
+  }
+})
+
+bot.on('playerLeft', function (player) {
+  if (client.channels.cache.get(config.bridge) !== undefined) {
+    var embed = new Discord.MessageEmbed()
+      .setColor('#C970D9')
+      .setURL('https://github.com/AlexProgrammerDE/PistonBot')
+      .addField('Player left the game:', player.username.replace('@', '(at)'), true)
+      .setTimestamp()
+      .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
+    client.channels.cache.get(config.bridge).send(embed)
+  }
+}) */
+
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)
 
@@ -685,64 +739,32 @@ client.on('ready', () => {
 })
 
 client.on('message', msg => {
-  var message = ''
-  var found = false
-  var player
-  var messagepart
-  var split
+  if (msg.channel.id === config.bridge && msg.member.user !== client.user) {
+    if (msg.content.startsWith('_help')) {
+      msg.reply('PistonBot Discord help:  _help, _discord, _playercount, _players')
+    } else if (msg.content.startsWith('_discord')) {
+      msg.reply('PistonBot Discord: https://discord.gg/9hNWscq')
+    } else if (msg.content.startsWith('_playercount')) {
+      var playercount = 0
 
-  if (msg.content.startsWith('_sendmessage')) {
-    split = msg.content.split(' ')
-
-    if (split.length === 1) {
-      msg.reply('Usage: _sendmessage player message')
-    }
-
-    if (split.length === 2) {
-      msg.reply('Please specify a message.')
-    }
-
-    if (split.length > 2) {
-      for (player in bot.players) {
-        if (bot.players[player].username === split[1]) {
-          found = true
+      for (var count in bot.players) {
+        if (count) {
+          playercount++
         }
       }
 
-      if (found) {
-        for (messagepart in split) {
-          if (messagepart > 1) {
-            message = message + split[messagepart] + ' '
-          }
-        }
+      msg.reply(server + '\'s playercount: ' + playercount)
+    } else if (msg.content.startsWith('_players')) {
+      var reply = 'Players on ' + server + ': \n'
 
-        bot.chat('/tell ' + split[1] + ' ' + msg.author.username + '#' + msg.author.discriminator + ' ' + message)
-      } else {
-        msg.reply("Sorry i can't find that user on the server.")
-      }
-    }
-  } else if (msg.content.startsWith('_broadcast')) {
-    split = msg.content.split(' ')
-
-    if (split.length === 1) {
-      msg.reply('Please specify a message.')
-    }
-
-    if (split.length > 1) {
-      for (messagepart in split) {
-        if (messagepart > 0) {
-          message = message + split[messagepart] + ' '
-        }
+      for (var player in bot.players) {
+        reply = reply + player + '\n'
       }
 
-      bot.chat(msg.author.username + '#' + msg.author.discriminator + ' ' + message)
+      msg.reply(reply)
+    } else {
+      bot.chat('> [ChatBridge] ' + msg.author.username + ': ' + msg.content)
     }
-  } else if (msg.content.startsWith('_help')) {
-    msg.reply('PistonBot Discord help:  _help, _discord')
-  } else if (msg.channel.id === config.bridge && msg.member.user !== client.user) {
-    bot.chat('> [ChatBridge] ' + msg.author.username + ': ' + msg.content)
-  } else if (msg.content.startsWith('_discord')) {
-    msg.reply('PistonBot Discord: https://discord.gg/9hNWscq')
   }
 })
 
