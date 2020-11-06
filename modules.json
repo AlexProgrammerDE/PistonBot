@@ -24,11 +24,11 @@
     },
     "viewer": {
       "activated": true,
-      "port":80
+      "port":8880
     },
     "inventory": {
       "activated": true,
-      "port":8880
+      "port":8443
     },
     "gamemode":true,
     "hi":true
