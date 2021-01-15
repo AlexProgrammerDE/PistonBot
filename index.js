@@ -1,20 +1,25 @@
 const mineflayer = require('mineflayer')
-const express = require('express')
-const fs = require('fs')
-const ud = require('urban-dictionary')
-const armorManager = require('mineflayer-armor-manager')
-const Discord = require('discord.js')
 const inventoryViewer = require('mineflayer-web-inventory')
 const tpsPlugin = require('mineflayer-tps')(mineflayer)
-
-const commands = require('./data/commands')
-const bible = require('./data/bible')
-const spam = require('./data/spam')
+const armorManager = require('mineflayer-armor-manager')
+const mc = require('minecraft-protocol')
 
 const viewer = require('prismarine-viewer').mineflayer
 const pathfinder = require('mineflayer-pathfinder').pathfinder
 const Movements = require('mineflayer-pathfinder').Movements
 const { GoalNear, GoalBlock, GoalXZ, GoalY, GoalFollow } = require('mineflayer-pathfinder').goals
+
+const express = require('express')
+const pretty = require('express-prettify')
+const helmet = require('helmet')
+
+const fs = require('fs')
+const ud = require('urban-dictionary')
+const Discord = require('discord.js')
+
+const commands = require('./data/commands')
+const bible = require('./data/bible')
+const spam = require('./data/spam')
 
 const client = new Discord.Client({ disableEveryone: true })
 const app = express()
@@ -27,13 +32,12 @@ const config = require('./config.json')[server]
 const discordconfig = require('./discord.json')
 const skins = require('./skins.json')
 
-var isEating = false
-var end = false
-var isWriting = false
+let isEating = false
+let end = false
 
 const time = 10
 
-var bot = mineflayer.createBot({
+const bot = mineflayer.createBot({
   host: config.host,
   username: secrets.username,
   port: config.port,
@@ -87,7 +91,7 @@ bot.on('spawn', function () {
 })
 
 function text (username, message, whisper) {
-  var playerjoin = require('./data/playerjoin.json')
+  let playerjoin = require('./data/playerjoin.json')
 
   fs.writeFile('./time.txt', time.toString(), function (err) {
     if (err) {
@@ -95,10 +99,10 @@ function text (username, message, whisper) {
     }
   })
 
-  var playerdata = require('./data/playerdata.json')
-  var executed = false
-  var prefix
-  var messagesplit = message.split(' ')
+  let playerdata = require('./data/playerdata.json')
+  let executed = false
+  let prefix
+  const messagesplit = message.split(' ')
 
   const defaultMove = new Movements(bot, mcData)
 
@@ -118,10 +122,10 @@ function text (username, message, whisper) {
 
   if (username === bot.username) return
 
-  if (client.channels.cache.get(config.bridge) !== undefined) {
-    var embed = new Discord.MessageEmbed()
+  if (client.channels.cache.get(config.bridge) !== undefined && !whisper) {
+    const embed = new Discord.MessageEmbed()
       .setColor('#C970D9')
-      .setURL('https://github.com/AlexProgrammerDE/PistonBot')
+      .setURL(discordconfig.website)
       .addField(username.replace('@', '(at)'), message.replace('@', '(at)'), true)
       .setTimestamp()
       .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
@@ -349,7 +353,7 @@ function text (username, message, whisper) {
   }
 
   if (message.startsWith('_say') && username === 'Pistonmaster') {
-    var say = message.replace('_say ', '')
+    const say = message.replace('_say ', '')
 
     bot.chat(say)
     executed = true
@@ -380,24 +384,16 @@ function text (username, message, whisper) {
       playerjoin[username] = true
     }
 
-    isWriting = true
-
-    fs.writeFile('./data/playerjoin.json', JSON.stringify(playerjoin, null, 4), function (err) {
-      if (err) {
-        console.log(err)
-      }
-      console.log('Saved playerjoin.')
-      isWriting = false
-    })
+    fs.writeFileSync('./data/playerjoin.json', JSON.stringify(playerjoin, null, 4))
   }
 
   if (message.startsWith('_urban ')) {
-    var term = message.slice(7)
+    const term = message.slice(7)
     ud.term(term, (error, entries, tags, sounds) => {
       if (error) {
         console.error(error.message)
       } else {
-        var urbananswer = entries[0].definition
+        let urbananswer = entries[0].definition
 
         urbananswer = urbananswer.replace(/\r?\n|\r/g, '')
 
@@ -407,7 +403,7 @@ function text (username, message, whisper) {
   }
 
   if (whisper === false) {
-    var split = message.split(' ')
+    const split = message.split(' ')
 
     if (message.startsWith('_fm') || message.startsWith('_firstmessage')) {
       if (split.length === 1) {
@@ -471,9 +467,9 @@ function text (username, message, whisper) {
       bot.chat('Calculating amount of ALL saved phrases.')
 
       playerdata = require('./data/playerdata.json')
-      var amount1 = 0
+      let amount1 = 0
 
-      for (var player1 in playerdata) {
+      for (const player1 in playerdata) {
         amount1 = amount1 + playerdata[player1].length
       }
 
@@ -483,12 +479,12 @@ function text (username, message, whisper) {
     if (message.startsWith('_words') && username === 'Pistonmaster') {
       bot.chat('Calculating amount of ALL saved words.')
 
-      var amount2 = 0
+      let amount2 = 0
 
-      for (var player2 in playerdata) {
-        for (var phraseindex in playerdata[player2]) {
-          var phrasetext = playerdata[player2][phraseindex]
-          var phrasesplit = phrasetext.split(' ')
+      for (const player2 in playerdata) {
+        for (const phraseindex in playerdata[player2]) {
+          const phrasetext = playerdata[player2][phraseindex]
+          const phrasesplit = phrasetext.split(' ')
           amount2 = amount2 + phrasesplit.length
         }
       }
@@ -509,14 +505,7 @@ function text (username, message, whisper) {
         playerdata[username] = [message]
       }
 
-      isWriting = true
-      fs.writeFile('./data/playerdata.json', JSON.stringify(playerdata, null, 4), function (err) {
-        if (err) {
-          console.log(err)
-        }
-        console.log('Added the message.')
-        isWriting = false
-      })
+      fs.writeFileSync('./data/playerdata.json', JSON.stringify(playerdata, null, 4))
     }
   }
 }
@@ -530,10 +519,11 @@ bot.on('whisper', function (username, message, a, jsonMsg) {
 })
 
 if (modules.web.activated) {
-  app.use('/', (req, res) => {
-    var playerdata = require('./data/playerdata.json')
+  app.use(helmet())
+  app.use(pretty({ query: 'pretty' }))
 
-    res.send(playerdata)
+  app.use('/', (req, res) => {
+    res.json(require('./data/playerdata.json'))
   })
 
   app.listen(modules.web.port)
@@ -565,7 +555,7 @@ bot.once('spawn', () => {
   setInterval(() => {
     if (modules.eat) {
       if (isEating === false && (bot.food !== 20)) {
-        var food = checkFood(bot.inventory)
+        const food = checkFood(bot.inventory)
 
         if (food) {
           bot.equip(food, 'hand', (err) => {
@@ -580,7 +570,7 @@ bot.once('spawn', () => {
     }
 
     if (isEating === false && modules.attack) {
-      var weapon = checkWeapon(bot.inventory)
+      const weapon = checkWeapon(bot.inventory)
 
       if (weapon) {
         bot.equip(weapon, 'hand', (err) => {
@@ -591,7 +581,7 @@ bot.once('spawn', () => {
       }
     }
 
-    var entity = nearestEntity()
+    const entity = nearestEntity()
     if (entity) {
       if (entity.type === 'player') {
         bot.lookAt(entity.position.offset(0, 1, 0))
@@ -607,8 +597,8 @@ bot.once('spawn', () => {
 
   setInterval(() => {
     if (modules.totem) {
-      var totem = bot.inventory.findInventoryItem(mcData.itemsByName.totem_of_undying.id, null)
-      var isTotemInOffHand = false
+      const totem = bot.inventory.findInventoryItem(mcData.itemsByName.totem_of_undying.id, null)
+      let isTotemInOffHand = false
 
       if (bot.inventory.slots[45] !== null && bot.inventory.slots[45] !== undefined && bot.inventory.slots[45].type === mcData.itemsByName.totem_of_undying.id) {
         isTotemInOffHand = true
@@ -638,7 +628,7 @@ if (modules.bchelp) {
 }
 
 setInterval(() => {
-  if (end && !isWriting) {
+  if (end) {
     console.log('Ending ...')
     process.exit(0)
   }
@@ -669,9 +659,9 @@ bot.on('path_update', (results) => {
 })
 
 function nearestEntity (type) {
-  var id, entity, dist
-  var best = null
-  var bestDistance = null
+  let id, entity, dist
+  let best = null
+  let bestDistance = null
   for (id in bot.entities) {
     entity = bot.entities[id]
     if (type && entity.type !== type) continue
@@ -686,7 +676,7 @@ function nearestEntity (type) {
 }
 
 function checkFood (window) {
-  var food = null
+  let food = null
 
   window.items().forEach(Item => {
     if (foodType.includes(Item.type)) {
@@ -698,8 +688,8 @@ function checkFood (window) {
 }
 
 function checkWeapon (window) {
-  var index = weapons.length
-  var weapon = null
+  let index = weapons.length
+  let weapon = null
 
   window.items().forEach(Item => {
     if (weapons.includes(Item.type)) {
@@ -731,35 +721,100 @@ client.on('ready', () => {
 })
 
 client.on('message', msg => {
-  if (msg.author.id === discordconfig.ownerid) {
-    if (msg.content.startsWith('_restart')) {
-      end = true
-    }
-  } else if (msg.channel.id === config.bridge && msg.member.user !== client.user) {
-    if (msg.content.startsWith('_help')) {
-      msg.reply('PistonBot Discord help:  _help, _discord, _playercount, _players')
-    } else if (msg.content.startsWith('_discord')) {
-      msg.reply('PistonBot Discord: https://discord.gg/9hNWscq')
-    } else if (msg.content.startsWith('_playercount')) {
-      var playercount = 0
-
-      for (var count in bot.players) {
-        if (count) {
-          playercount++
+  if (msg.member !== null && msg.member.user !== client.user) {
+    if (msg.channel.id !== config.bridge) {
+      // Commands that should only be triggered once!
+      if (discordconfig.primaryserver === server) {
+        if (msg.content.startsWith('_help')) {
+          msg.reply('PistonBot Discord help:  `_help, _discord, _invite, _info <server>, _playercount <server>, _players <server>, _tps <server>, _servers`')
+        } else if (msg.content.startsWith('_discord')) {
+          msg.reply('PistonBot Discord: https://discord.gg/9hNWscq')
+        } else if (msg.content.startsWith('_invite')) {
+          msg.reply('Add PistonBot to YOUR discord server: https://bit.ly/33nSkz1')
+        } else if (msg.content.startsWith('_dservercount')) {
+          msg.reply('PistonBot is on ' + client.guilds.cache.size + ' servers.')
         }
       }
 
-      msg.reply(server + '\'s playercount: ' + playercount)
-    } else if (msg.content.startsWith('_players')) {
-      var reply = 'Players on ' + server + ': \n'
+      if (msg.content.startsWith('_playercount ' + server)) {
+        let playercount = 0
 
-      for (var player in bot.players) {
-        reply = reply + player + '\n'
-      }
+        for (const count in bot.players) {
+          if (count) {
+            playercount++
+          }
+        }
 
-      msg.reply(reply)
+        msg.reply(server + '\'s playercount: `' + playercount + '`')
+      } else if (msg.content.startsWith('_players ' + server)) {
+        let reply = 'Players on ' + server + ': \n```'
+
+        for (const player in bot.players) {
+          reply = reply + player + '\n'
+        }
+
+        reply = reply + '```'
+
+        msg.reply(reply)
+      } else if (msg.content.startsWith('_info ' + server)) {
+        mc.ping({
+          host: config.host,
+          port: config.port,
+          version: config.MCversion
+        }, function (err, pingResult) {
+          if (err) {
+            console.log(err)
+            msg.reply('Sorry something went wrong. :(')
+          } else {
+            if (server === 'hisparquia') {
+              msg.channel.send('Sorry this feature is disabled for this server!')
+              return
+            }
+
+            const base64Image = pingResult.favicon.split(';base64,').pop()
+
+            fs.writeFile(server + '.png', base64Image, { encoding: 'base64' }, function (err) {
+              if (err) {
+                console.log(err)
+              }
+
+              console.log('File created')
+            })
+
+            console.log(pingResult.description.text)
+
+            if (pingResult.description.text.replace(/§4/gi, '').replace(/§c/gi, '').replace(/§6/gi, '').replace(/§e/gi, '').replace(/§2/gi, '').replace(/§a/gi, '').replace(/§b/gi, '').replace(/§3/gi, '').replace(/§1/gi, '').replace(/§9/gi, '').replace(/§d/gi, '').replace(/§5/gi, '').replace(/§f/gi, '').replace(/§7/gi, '').replace(/§8/gi, '').replace(/§0/gi, '').replace(/§r/gi, '').replace(/§l/gi, '').replace(/§o/gi, '').replace(/§n/gi, '').replace(/§m/gi, '').replace(/§k/gi, '').replace('@', '(at)') !== '') {
+              pingResult.description.text = 'unknown'
+            }
+
+            const favicon = new Discord.MessageAttachment('./' + server + '.png', server + '.png')
+            const embed = new Discord.MessageEmbed()
+              .setTitle(server + '\'s Status')
+              .setColor('#C970D9')
+              .attachFiles(favicon)
+              .setThumbnail('attachment://' + server + '.png')
+              .addField('Players:', pingResult.players.online.toString() + ' / ' + pingResult.players.max.toString())
+              .addField('Motd:', pingResult.description.text.replace(/§4/gi, '').replace(/§c/gi, '').replace(/§6/gi, '').replace(/§e/gi, '').replace(/§2/gi, '').replace(/§a/gi, '').replace(/§b/gi, '').replace(/§3/gi, '').replace(/§1/gi, '').replace(/§9/gi, '').replace(/§d/gi, '').replace(/§5/gi, '').replace(/§f/gi, '').replace(/§7/gi, '').replace(/§8/gi, '').replace(/§0/gi, '').replace(/§r/gi, '').replace(/§l/gi, '').replace(/§o/gi, '').replace(/§n/gi, '').replace(/§m/gi, '').replace(/§k/gi, '').replace('@', '(at)'))
+              .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
+              .setURL(discordconfig.website)
+              .setTimestamp(Date.now())
+
+            msg.channel.send(embed)
+          }
+        })
+      } else if (msg.content.startsWith('_tps ' + server)) {
+        msg.reply('Current tps: `' + bot.getTps() + '`')
+      } else if (msg.content.startsWith('_servers')) {
+        msg.channel.send('`' + server + '`')
+      } else if (msg.content.startsWith('_setupbridge ' + server)) {}
     } else {
-      bot.chat('> [ChatBridge] ' + msg.author.username + ': ' + msg.content)
+      if (msg.content.startsWith('_restart')) {
+        if (msg.author.id === discordconfig.ownerid) {
+          end = true
+        }
+      } else {
+        bot.chat('> [ChatBridge] ' + msg.author.username + ': ' + msg.content)
+      }
     }
   }
 })

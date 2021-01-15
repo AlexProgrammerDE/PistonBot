@@ -28,7 +28,11 @@
     },
     "inventory": {
       "activated": true,
-      "port":8443
+      "port":2095
+    },
+    "api": {
+      "activated": false,
+      "port":8880
     },
     "gamemode":true,
     "hi":true
@@ -61,6 +65,10 @@
       "port":80
     },
     "inventory": {
+      "activated": false,
+      "port":8880
+    },
+    "api": {
       "activated": false,
       "port":8880
     },
@@ -98,6 +106,10 @@
       "activated": false,
       "port":8880
     },
+    "api": {
+      "activated": false,
+      "port":8880
+    },
     "gamemode":true,
     "hi":true
   },
@@ -129,6 +141,10 @@
       "port":80
     },
     "inventory": {
+      "activated": false,
+      "port":8880
+    },
+    "api": {
       "activated": false,
       "port":8880
     },

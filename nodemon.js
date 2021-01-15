@@ -1,5 +1,5 @@
 // Unused code
-var nodemon = require('nodemon')
+const nodemon = require('nodemon')
 
 nodemon({
   script: 'index.js',
