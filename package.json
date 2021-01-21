@@ -37,7 +37,7 @@
     "mineflayer-web-inventory": "^1.2.0",
     "prismarine-viewer": "^1.6.0",
     "require-self": "^0.2.3",
-    "standard": "^14.3.4",
+    "standard": "^16.0.0",
     "urban-dictionary": "^2.2.1"
   }
 }
