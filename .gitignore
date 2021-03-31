@@ -116,3 +116,6 @@ dist
 .pnp.*
 
 .idea
+
+config.json
+secrets.json

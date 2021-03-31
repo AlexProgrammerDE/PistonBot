@@ -29,7 +29,8 @@ const secrets = require('./secrets.json')[server]
 const modules = require('./modules.json')[server]
 const config = require('./config.json')[server]
 
-const discordConfig = require('./discord.json')
+const discordconfig = require('./discord.json')
+const skins = require('./skins.json')
 
 let isEating = false
 let end = false
@@ -84,6 +85,8 @@ bot.on('spawn', function () {
     }
   })
 
+  bot.chat('/skin set ' + skins[Math.round(Math.random() * (skins.length - 1))])
+
   bot.chat('/login ' + secrets.ingamepassword)
 })
 
@@ -122,7 +125,7 @@ function text (username, message, whisper) {
   if (client.channels.cache.get(config.bridge) !== undefined && !whisper) {
     const embed = new Discord.MessageEmbed()
       .setColor('#C970D9')
-      .setURL(discordConfig.website)
+      .setURL(discordconfig.website)
       .addField(username.replace('@', '(at)'), message.replace('@', '(at)'), true)
       .setTimestamp()
       .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
@@ -141,7 +144,7 @@ function text (username, message, whisper) {
   }
 
   if (message.startsWith('_coords') && modules.coords) {
-    bot.chat(prefix + 'My coords are: ' + Number.parseInt(String(bot.entity.position.x)) + ' ' + Number.parseInt(String(bot.entity.position.y)) + ' ' + Number.parseInt(String(bot.entity.position.z)))
+    bot.chat(prefix + 'My coords are: ' + Number.parseInt(bot.entity.position.x) + ' ' + Number.parseInt(bot.entity.position.y) + ' ' + Number.parseInt(bot.entity.position.z))
     executed = true
   }
 
@@ -390,11 +393,11 @@ function text (username, message, whisper) {
       if (error) {
         console.error(error.message)
       } else {
-        let urbanAnswer = entries[0].definition
+        let urbananswer = entries[0].definition
 
-        urbanAnswer = urbanAnswer.replace(/\r?\n|\r/g, '')
+        urbananswer = urbananswer.replace(/\r?\n|\r/g, '')
 
-        bot.chat('/tell ' + username + ' ' + urbanAnswer)
+        bot.chat('/tell ' + username + ' ' + urbananswer)
       }
     })
   }
@@ -479,10 +482,10 @@ function text (username, message, whisper) {
       let amount2 = 0
 
       for (const player2 in playerdata) {
-        for (const phraseIndex in playerdata[player2]) {
-          const phraseText = playerdata[player2][phraseIndex]
-          const phraseSplit = phraseText.split(' ')
-          amount2 = amount2 + phraseSplit.length
+        for (const phraseindex in playerdata[player2]) {
+          const phrasetext = playerdata[player2][phraseindex]
+          const phrasesplit = phrasetext.split(' ')
+          amount2 = amount2 + phrasesplit.length
         }
       }
 
@@ -656,8 +659,7 @@ bot.on('path_update', (results) => {
 })
 
 function nearestEntity (type) {
-  let id, dist
-  let entity
+  let id, entity, dist
   let best = null
   let bestDistance = null
   for (id in bot.entities) {
@@ -709,8 +711,8 @@ client.on('ready', () => {
     status: 'online',
     activity: {
       type: 'PLAYING',
-      url: discordConfig.website,
-      name: discordConfig.status,
+      url: discordconfig.website,
+      name: discordconfig.status,
       application: {
         id: '712245398269329511'
       }
@@ -722,7 +724,7 @@ client.on('message', msg => {
   if (msg.member !== null && msg.member.user !== client.user) {
     if (msg.channel.id !== config.bridge) {
       // Commands that should only be triggered once!
-      if (discordConfig.primaryserver === server) {
+      if (discordconfig.primaryserver === server) {
         if (msg.content.startsWith('_help')) {
           msg.reply('PistonBot Discord help:  `_help, _discord, _invite, _info <server>, _playercount <server>, _players <server>, _tps <server>, _servers`')
         } else if (msg.content.startsWith('_discord')) {
@@ -735,15 +737,15 @@ client.on('message', msg => {
       }
 
       if (msg.content.startsWith('_playercount ' + server)) {
-        let playerCount = 0
+        let playercount = 0
 
         for (const count in bot.players) {
           if (count) {
-            playerCount++
+            playercount++
           }
         }
 
-        msg.reply(server + '\'s playercount: `' + playerCount + '`')
+        msg.reply(server + '\'s playercount: `' + playercount + '`')
       } else if (msg.content.startsWith('_players ' + server)) {
         let reply = 'Players on ' + server + ': \n```'
 
@@ -794,7 +796,7 @@ client.on('message', msg => {
               .addField('Players:', pingResult.players.online.toString() + ' / ' + pingResult.players.max.toString())
               .addField('Motd:', pingResult.description.text.replace(/§4/gi, '').replace(/§c/gi, '').replace(/§6/gi, '').replace(/§e/gi, '').replace(/§2/gi, '').replace(/§a/gi, '').replace(/§b/gi, '').replace(/§3/gi, '').replace(/§1/gi, '').replace(/§9/gi, '').replace(/§d/gi, '').replace(/§5/gi, '').replace(/§f/gi, '').replace(/§7/gi, '').replace(/§8/gi, '').replace(/§0/gi, '').replace(/§r/gi, '').replace(/§l/gi, '').replace(/§o/gi, '').replace(/§n/gi, '').replace(/§m/gi, '').replace(/§k/gi, '').replace('@', '(at)'))
               .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
-              .setURL(discordConfig.website)
+              .setURL(discordconfig.website)
               .setTimestamp(Date.now())
 
             msg.channel.send(embed)
@@ -807,7 +809,7 @@ client.on('message', msg => {
       } else if (msg.content.startsWith('_setupbridge ' + server)) {}
     } else {
       if (msg.content.startsWith('_restart')) {
-        if (msg.author.id === discordConfig.ownerid) {
+        if (msg.author.id === discordconfig.ownerid) {
           end = true
         }
       } else {
