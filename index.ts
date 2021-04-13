@@ -4,6 +4,7 @@ import {Entity, EntityType} from "prismarine-entity"
 import {Window} from "prismarine-windows"
 import {Item as PrismarineItem} from "prismarine-item"
 import {Pathfinder} from "mineflayer-pathfinder"
+import {Client} from "discord.js"
 
 const mineflayer = require('mineflayer')
 const inventoryViewer = require('mineflayer-web-inventory')
@@ -28,7 +29,7 @@ const commands = require('./data/commands')
 const bible = require('./data/bible')
 const spam = require('./data/spam')
 
-const client = new Discord.Client({disableEveryone: true})
+const client: Client = new Discord.Client({disableEveryone: true})
 const app = express()
 const server = process.argv[2]
 
@@ -105,7 +106,7 @@ function text(username: string, message: string, whisper: boolean) {
     let playerData = require('./data/playerdata.json')
     let executed: boolean = false
     let prefix: string
-    const messagesplit: string[] = message.split(' ')
+    const messageSplit: string[] = message.split(' ')
 
     const defaultMove = new Movements(bot, mcData)
 
@@ -228,23 +229,23 @@ function text(username: string, message: string, whisper: boolean) {
 
     // TODO
     if (message.startsWith('_ping') && modules.ping) {
-        if (message === '_ping' || (messagesplit.length > 1 && bot.players[messagesplit[1]] === undefined)) {
+        if (message === '_ping' || (messageSplit.length > 1 && bot.players[messageSplit[1]] === undefined)) {
             if (bot.players[username]) {
                 bot.chat(prefix + username + ' your ping is: ' + bot.players[username].ping)
             } else {
                 bot.chat(prefix + 'Sorry i can only ping players.')
             }
         } else {
-            if (messagesplit.length === 2) {
-                if (bot.players[messagesplit[1]]) {
-                    if (messagesplit[1] === username) {
+            if (messageSplit.length === 2) {
+                if (bot.players[messageSplit[1]]) {
+                    if (messageSplit[1] === username) {
                         if (bot.players[username]) {
                             bot.chat(prefix + username + ' your ping is: ' + bot.players[username].ping)
                         } else {
                             bot.chat(prefix + 'Sorry i can only ping players.')
                         }
                     } else {
-                        bot.chat(prefix + 'The ping of ' + bot.players[messagesplit[1]].username + ' is: ' + bot.players[messagesplit[1]].ping)
+                        bot.chat(prefix + 'The ping of ' + bot.players[messageSplit[1]].username + ' is: ' + bot.players[messageSplit[1]].ping)
                     }
                 } else {
                     bot.chat(prefix + "Sorry i can't find that player.")
@@ -264,16 +265,16 @@ function text(username: string, message: string, whisper: boolean) {
                 bot.chat(prefix + 'Sorry i cann\'t find you.')
             }
         } else {
-            if (messagesplit.length === 2) {
-                if (bot.players[messagesplit[1]] && bot.players[messagesplit[1]].gamemode) {
-                    if (messagesplit[1] === username) {
+            if (messageSplit.length === 2) {
+                if (bot.players[messageSplit[1]] && bot.players[messageSplit[1]].gamemode) {
+                    if (messageSplit[1] === username) {
                         if (bot.players[username]) {
                             bot.chat(prefix + username + ' your ping is: ' + bot.players[username].gamemode)
                         } else {
                             bot.chat(prefix + 'Sorry i cann\'t find you.')
                         }
                     } else {
-                        bot.chat(prefix + 'The _gamemode of ' + bot.players[messagesplit[1]].username + ' is: ' + bot.players[messagesplit[1]].gamemode)
+                        bot.chat(prefix + 'The _gamemode of ' + bot.players[messageSplit[1]].username + ' is: ' + bot.players[messageSplit[1]].gamemode)
                     }
                 } else {
                     bot.chat(prefix + "Sorry i can't find that player.")
@@ -297,9 +298,9 @@ function text(username: string, message: string, whisper: boolean) {
 
     if (modules.tp) {
         if (message.startsWith('_tpa')) {
-            if (messagesplit.length === 2) {
+            if (messageSplit.length === 2) {
                 if (bot.entity.position.x >= 1000 || bot.entity.position.z >= 1000) {
-                    bot.chat('/tpa ' + messagesplit[1])
+                    bot.chat('/tpa ' + messageSplit[1])
                 } else {
                     bot.chat(prefix + 'Sorry i am not 1000 blocks away from spawn. :(')
                 }
@@ -310,8 +311,8 @@ function text(username: string, message: string, whisper: boolean) {
         }
 
         if (message.startsWith('_tpy')) {
-            if (messagesplit.length === 2) {
-                bot.chat('/tpy ' + messagesplit[1])
+            if (messageSplit.length === 2) {
+                bot.chat('/tpy ' + messageSplit[1])
             } else {
                 bot.chat(prefix + 'Sorry you should use: _tpy username')
             }
@@ -337,8 +338,8 @@ function text(username: string, message: string, whisper: boolean) {
     }
 
     if (message.startsWith('_report') && modules.report) {
-        if (messagesplit.length >= 3) {
-            bot.chat(prefix + 'Reported ' + messagesplit[1] + ' for ' + message.replace('_report ' + messagesplit[1], ''))
+        if (messageSplit.length >= 3) {
+            bot.chat(prefix + 'Reported ' + messageSplit[1] + ' for ' + message.replace('_report ' + messageSplit[1], ''))
         } else {
             bot.chat(prefix + 'Sorry you should use: _report username reason')
         }
@@ -604,7 +605,7 @@ bot.once('spawn', () => {
 
     setInterval(() => {
         if (modules.totem) {
-            const totem = bot.inventory.findInventoryItem(mcData.itemsByName.totem_of_undying.id, null, false)
+            const totem: PrismarineItem | null = bot.inventory.findInventoryItem(mcData.itemsByName.totem_of_undying.id, null, false)
             let isTotemInOffHand = false
 
             if (bot.inventory.slots[45] !== null && bot.inventory.slots[45] !== undefined && bot.inventory.slots[45].type === mcData.itemsByName.totem_of_undying.id) {
