@@ -1,16 +1,14 @@
 {
   "name": "pistonbot",
   "version": "1.0.0",
-  "description": "\u0016My own minecraft bot.",
+  "description": "My own minecraft bot.",
   "main": "index.js",
   "scripts": {
-    "start": "npm run 6b6t",
-    "6b6t": "bash start.sh 6b6t",
+    "start": "npm run 7b7t",
+    "7b7t": "bash start.sh 7b7t",
     "10b10t": "bash start.sh 10b10t",
     "hisparquia": "bash start.sh hisparquia",
-    "l2x9": "bash start.sh l2x9",
-    "fix": "standard --fix",
-    "webserver": "node ./webserver.js"
+    "fix": "ts-standard --fix"
   },
   "repository": {
     "type": "git",
@@ -43,6 +41,7 @@
     "prismarine-viewer": "^1.19.2",
     "request": "^2.88.2",
     "require-self": "^0.2.3",
+    "ts-standard": "^10.0.0",
     "typescript": "^4.2.4",
     "urban-dictionary": "^2.2.1"
   }
