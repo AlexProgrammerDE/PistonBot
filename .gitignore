@@ -119,3 +119,6 @@ dist
 
 config.json
 secrets.json
+
+data/playerdata.json
+data/playerjoin.json
