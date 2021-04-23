@@ -108,7 +108,7 @@ function text(username: string, message: string, whisper: boolean) {
     })
 
     let playerJoin = require('./data/playerjoin.json')
-    let playerData = require('./data/playerdata.json')
+    let playerData: any = require('./data/playerdata.json')
     let executed: boolean = false
     let prefix: string
     const messageSplit: string[] = message.split(' ')
@@ -496,9 +496,9 @@ function text(username: string, message: string, whisper: boolean) {
 
             let amount2 = 0
 
-            for (const player2 in playerData) {
-                for (const phraseIndex in playerData[player2]) {
-                    const phraseText = playerData[player2][phraseIndex]
+            for (const player in playerData) {
+                for (const phraseIndex in playerData[player]) {
+                    const phraseText = playerData[player][phraseIndex]
                     const phraseSplit = phraseText.split(' ')
                     amount2 = amount2 + phraseSplit.length
                 }
@@ -787,14 +787,10 @@ client.on('message', msg => {
                         console.log(err)
                         msg.reply('Sorry something went wrong. :(')
                     } else {
-                        if (server === 'hisparquia') {
-                            msg.channel.send('Sorry this feature is disabled for this server!')
-                            return
-                        }
-
                         const base64Image: string | undefined = pingResult.favicon.split(';base64,').pop()
 
                         if (base64Image  === undefined)
+                            return
 
                         fs.writeFile(server + '.png', base64Image, {encoding: 'base64'}, function (err: NodeJS.ErrnoException | null) {
                             if (err) {
@@ -839,7 +835,7 @@ client.on('message', msg => {
     }
 })
 
-client.login(secretsFile.token)
+client.login(secretsFile.token).then(r => console.log(r))
 
 function replaceColor(msg: string): string {
     return msg.replace(/§4/gi, '').replace(/§c/gi, '').replace(/§6/gi, '').replace(/§e/gi, '').replace(/§2/gi, '').replace(/§a/gi, '').replace(/§b/gi, '').replace(/§3/gi, '').replace(/§1/gi, '').replace(/§9/gi, '').replace(/§d/gi, '').replace(/§5/gi, '').replace(/§f/gi, '').replace(/§7/gi, '').replace(/§8/gi, '').replace(/§0/gi, '').replace(/§r/gi, '').replace(/§l/gi, '').replace(/§o/gi, '').replace(/§n/gi, '').replace(/§m/gi, '').replace(/§k/gi, '').replace('@', '(at)')

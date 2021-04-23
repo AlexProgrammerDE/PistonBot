@@ -6,8 +6,6 @@
   "scripts": {
     "start": "npm run 7b7t",
     "7b7t": "bash start.sh 7b7t",
-    "10b10t": "bash start.sh 10b10t",
-    "hisparquia": "bash start.sh hisparquia",
     "fix": "ts-standard --fix",
     "test": "ts-node index.ts localhost"
   },
@@ -29,23 +27,23 @@
     "discord.js": "^12.5.3",
     "express": "^4.17.1",
     "express-prettify": "^0.1.1",
-    "helmet": "^4.4.1",
-    "minecraft-data": "^2.82.2",
+    "helmet": "^4.5.0",
+    "minecraft-data": "^2.84.0",
     "minecraft-protocol": "^1.25.0",
     "minecraft-protocol-chat-parser": "^3.0.2",
     "mineflayer": "^2.41.0",
-    "mineflayer-armor-manager": "^1.4.0",
+    "mineflayer-armor-manager": "^1.4.1",
     "mineflayer-pathfinder": "^1.6.1",
     "mineflayer-tps": "^1.0.1",
     "mineflayer-web-inventory": "^1.4.0",
     "prismarine-chat": "^1.0.3",
     "prismarine-entity": "^1.1.0",
-    "prismarine-viewer": "^1.19.2",
+    "prismarine-viewer": "^1.19.3",
     "request": "^2.88.2",
     "require-self": "^0.2.3",
+    "ts-node": "^9.1.1",
     "ts-standard": "^10.0.0",
     "typescript": "^4.2.4",
-    "urban-dictionary": "^2.2.1",
-    "ts-node": "^9.1.1"
+    "urban-dictionary": "^2.2.1"
   }
 }
