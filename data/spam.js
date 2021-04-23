@@ -1,8 +1,8 @@
 module.exports = {
-  txt: [
-    'text',
-    'something',
-    'Never give up!',
-    'example'
-  ]
+    txt: [
+        'text',
+        'something',
+        'Never give up!',
+        'example'
+    ]
 }

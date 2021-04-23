@@ -8,7 +8,8 @@
     "7b7t": "bash start.sh 7b7t",
     "10b10t": "bash start.sh 10b10t",
     "hisparquia": "bash start.sh hisparquia",
-    "fix": "ts-standard --fix"
+    "fix": "ts-standard --fix",
+    "test": "ts-node index.ts localhost"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "helmet": "^4.4.1",
     "minecraft-data": "^2.82.2",
     "minecraft-protocol": "^1.25.0",
+    "minecraft-protocol-chat-parser": "^3.0.2",
     "mineflayer": "^2.41.0",
     "mineflayer-armor-manager": "^1.4.0",
     "mineflayer-pathfinder": "^1.6.1",
@@ -43,6 +45,7 @@
     "require-self": "^0.2.3",
     "ts-standard": "^10.0.0",
     "typescript": "^4.2.4",
-    "urban-dictionary": "^2.2.1"
+    "urban-dictionary": "^2.2.1",
+    "ts-node": "^9.1.1"
   }
 }

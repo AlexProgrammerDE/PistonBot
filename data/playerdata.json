@@ -115868,7 +115868,12 @@
         "pistonmaster",
         ",",
         "invite , gg",
-        "invite, gg"
+        "invite, gg",
+        "-tps",
+        "a",
+        "Gave 1 Warped Sign to Pistonmaster]",
+        "_words",
+        "_phrases"
     ],
     "AnticoZero": [
         "lagazo",
@@ -123746,5 +123751,8 @@
     "L2X9AntiBot": [
         "Please verify you are not a bot at antibot.l2x9.org",
         "Verifica que no eres un bot en antibot.l2x9.org"
+    ],
+    "available": [
+        "3.2.1, you're on: 3.2.0"
     ]
 }

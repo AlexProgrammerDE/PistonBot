@@ -1,7 +1,7 @@
 while : ;
 do
     if [[ -f time.txt ]]; then
-        node index.js "$1"
+        ts-node index.ts "$1"
         echo "Sleeping for $(cat time.txt) seconds"
         sleep "$(cat time.txt)"
         getcat="$(cat time.txt)"

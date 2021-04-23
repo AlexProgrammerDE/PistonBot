@@ -1,20 +1,26 @@
 {
   "7b7t": {
-    "MCversion":"1.12.2",
-    "host":"7b7t.me",
-    "port":25565,
-    "bridge":"738497579624431686"
+    "MCversion": "1.12.2",
+    "host": "7b7t.me",
+    "port": 25565,
+    "bridge": "738497579624431686"
   },
   "10b10t": {
-    "MCversion":"1.12.2",
-    "host":"10b10t.org",
-    "port":25565,
-    "bridge":"749687287805247608"
+    "MCversion": "1.12.2",
+    "host": "10b10t.org",
+    "port": 25565,
+    "bridge": "749687287805247608"
   },
   "hisparquia": {
-    "MCversion":"1.12.2",
-    "host":"hisparquia.org",
-    "port":25565,
-    "bridge":"771775409439637534"
+    "MCversion": "1.12.2",
+    "host": "hisparquia.org",
+    "port": 25565,
+    "bridge": "771775409439637534"
+  },
+  "localhost": {
+    "MCversion": "1.16.5",
+    "host": "localhost",
+    "port": 25565,
+    "bridge": "834858576974708736"
   }
 }

@@ -1,116 +1,78 @@
 {
   "7b7t": {
-    "coords":true,
-    "tps":true,
-    "navigation":true,
-    "ping":true,
-    "help":true,
-    "tp":true,
-    "rules":true,
-    "ny":true,
-    "report":true,
-    "bible":true,
-    "about":true,
-    "armor":true,
-    "turn":true,
-    "bchelp":true,
-    "spam":false,
-    "eat":true,
-    "attack":true,
-    "totem":true,
+    "coords": true,
+    "tps": true,
+    "navigation": true,
+    "ping": true,
+    "help": true,
+    "tp": true,
+    "rules": true,
+    "ny": true,
+    "report": true,
+    "bible": true,
+    "about": true,
+    "armor": true,
+    "turn": true,
+    "bchelp": true,
+    "spam": false,
+    "eat": true,
+    "attack": true,
+    "totem": true,
     "web": {
       "activated": true,
-      "port":8080
+      "port": 8080
     },
     "viewer": {
       "activated": true,
-      "port":8880
+      "port": 8880
     },
     "inventory": {
       "activated": true,
-      "port":2095
+      "port": 2095
     },
     "api": {
       "activated": false,
-      "port":8880
+      "port": 8880
     },
-    "gamemode":true,
-    "hi":true
+    "gamemode": true,
+    "hi": true
   },
-  "10b10t": {
-    "coords":true,
-    "tps":true,
-    "navigation":true,
-    "ping":true,
-    "help":true,
-    "tp":true,
-    "rules":true,
-    "ny":true,
-    "report":true,
-    "bible":true,
-    "about":true,
-    "armor":true,
-    "turn":true,
-    "bchelp":true,
-    "spam":false,
-    "eat":true,
-    "attack":true,
-    "totem":true,
+  "localhost": {
+    "coords": true,
+    "tps": true,
+    "navigation": true,
+    "ping": true,
+    "help": true,
+    "tp": true,
+    "rules": true,
+    "ny": true,
+    "report": true,
+    "bible": true,
+    "about": true,
+    "armor": true,
+    "turn": true,
+    "bchelp": true,
+    "spam": false,
+    "eat": true,
+    "attack": true,
+    "totem": true,
     "web": {
       "activated": false,
-      "port":8080
+      "port": 8080
     },
     "viewer": {
       "activated": false,
-      "port":80
+      "port": 80
     },
     "inventory": {
       "activated": false,
-      "port":8880
+      "port": 8880
     },
     "api": {
       "activated": false,
-      "port":8880
+      "port": 8880
     },
-    "gamemode":true,
-    "hi":true
-  },
-  "hisparquia": {
-    "coords":true,
-    "tps":true,
-    "navigation":true,
-    "ping":true,
-    "help":true,
-    "tp":true,
-    "rules":true,
-    "ny":true,
-    "report":true,
-    "bible":true,
-    "about":true,
-    "armor":true,
-    "turn":true,
-    "bchelp":true,
-    "spam":false,
-    "eat":true,
-    "attack":true,
-    "totem":true,
-    "web": {
-      "activated": false,
-      "port":8080
-    },
-    "viewer": {
-      "activated": false,
-      "port":80
-    },
-    "inventory": {
-      "activated": false,
-      "port":8880
-    },
-    "api": {
-      "activated": false,
-      "port":8880
-    },
-    "gamemode":true,
-    "hi":true
+    "gamemode": true,
+    "hi": true
   }
 }
