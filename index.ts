@@ -32,7 +32,7 @@ const spam = require('./data/spam')
 
 const client: Client = new Discord.Client({ disableMentions: 'all' })
 const app = express()
-const server = process.argv[2]
+const server: string = process.argv[2]
 
 const secretsFile = require('./secrets.json')
 const serverSecrets = require('./secrets.json')[server]
@@ -84,7 +84,9 @@ bot.on('spawn', function () {
     bannedFood: []
   }
 
-  if (serverSecrets.ingamepassword !== undefined) { bot.chat('/login ' + serverSecrets.ingamepassword) }
+  if (serverSecrets.ingamepassword !== undefined) {
+    bot.chat('/login ' + serverSecrets.ingamepassword)
+  }
 })
 
 function text (username: string, message: string, whisper: boolean) {
@@ -96,7 +98,7 @@ function text (username: string, message: string, whisper: boolean) {
 
   let playerJoin = require('./data/playerjoin.json')
   let playerData: any = require('./data/playerdata.json')
-  let prefix: string
+  const prefix: string = whisper ? '/tell ' + username + ' ' : ''
   const args: string[] = message.split(' ').slice(1)
 
   const defaultMove = new Movements(bot, mcData)
@@ -120,20 +122,14 @@ function text (username: string, message: string, whisper: boolean) {
   const channel: Channel | undefined = client.channels.cache.get(config.bridge)
   if (channel !== undefined && !whisper) {
     const embed: MessageEmbed = new Discord.MessageEmbed()
-        .setColor('#C970D9')
-        .setURL(discordConfig.website)
-        .addField(username.replace('@', '(at)'), message.replace('@', '(at)'), true)
-        .setTimestamp()
-        .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
+      .setColor('#C970D9')
+      .setURL(discordConfig.website)
+      .addField(username.replace('@', '(at)'), message.replace('@', '(at)'), true)
+      .setTimestamp()
+      .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
     if (channel instanceof TextChannel) {
       channel.send(embed)
     }
-  }
-
-  if (whisper) {
-    prefix = '/tell ' + username + ' '
-  } else {
-    prefix = ''
   }
 
   // ONLY COMMAND
@@ -149,10 +145,8 @@ function text (username: string, message: string, whisper: boolean) {
     bot.chat(prefix + 'Current tps: ' + bot.getTps())
   }
 
-  if (modules.bible) {
-    if (message.startsWith('_bible') || message.startsWith('_verse')) {
-      bot.chat(prefix + bible.proverbs[Math.round(Math.random() * (bible.proverbs.length - 1))])
-    }
+  if ((message.startsWith('_bible') || message.startsWith('_verse')) && modules.bible) {
+    bot.chat(prefix + bible.proverbs[Math.round(Math.random() * (bible.proverbs.length - 1))])
   }
 
   if (message.startsWith('_about') && modules.about) {
@@ -171,7 +165,7 @@ function text (username: string, message: string, whisper: boolean) {
     bot.chat(prefix + 'YES!')
   }
 
-  if (message.startsWith('_help') && modules.help) {
+  if (message.startsWith('_help')) {
     bot.chat('/tell ' + username + ' PistonBot help: _tps, _ping, _coords, _tpa, _tpy, _rules, _report, _bible, _about, _goto, _come, _stop, _rm, _lm, _fm, _wm, _urban, _discord')
   }
 
@@ -179,25 +173,23 @@ function text (username: string, message: string, whisper: boolean) {
     bot.chat('/tell ' + username + ' https://discord.gg/zBPKyC5')
   }
 
-  if (modules.tp) {
-    if (message.startsWith('_tpa')) {
-      if (args.length === 1) {
-        if ((bot.entity.position.x >= 1000 || bot.entity.position.x <= -1000) || (bot.entity.position.z >= 1000 || bot.entity.position.z <= -1000)) {
-          bot.chat('/tpa ' + args[0])
-        } else {
-          bot.chat(prefix + 'Sorry i am not 1000 blocks away from spawn. :(')
-        }
+  if (message.startsWith('_tpa') && modules.tp) {
+    if (args.length === 1) {
+      if ((bot.entity.position.x >= 1000 || bot.entity.position.x <= -1000) || (bot.entity.position.z >= 1000 || bot.entity.position.z <= -1000)) {
+        bot.chat('/tpa ' + args[0])
       } else {
-        bot.chat(prefix + 'Sorry you should use: _tpa username')
+        bot.chat(prefix + 'Sorry i am not 1000 blocks away from spawn. :(')
       }
+    } else {
+      bot.chat(prefix + 'Sorry you should use: _tpa username')
     }
+  }
 
-    if (message.startsWith('_tpy')) {
-      if (args.length === 1) {
-        bot.chat('/tpy ' + args[0])
-      } else {
-        bot.chat(prefix + 'Sorry you should use: _tpy username')
-      }
+  if (message.startsWith('_tpy') && modules.tp) {
+    if (args.length === 1) {
+      bot.chat('/tpy ' + args[0])
+    } else {
+      bot.chat(prefix + 'Sorry you should use: _tpy username')
     }
   }
 
@@ -209,12 +201,12 @@ function text (username: string, message: string, whisper: boolean) {
     }
   }
 
-  if (modules.navigation && (!whisper)) {
+  if (modules.navigation && !whisper) {
     if (message.startsWith('_stop')) {
       if (bot.players[username] === undefined || bot.players[username].entity == null) {
-        bot.chat('Sorry only player which i see are allowed to use this command.')
+        bot.chat('Sorry only player which i see are allowed to use this command')
       } else {
-        bot.chat('Stopping...')
+        bot.chat('Stopping')
         bot.pathfinder.setMovements(defaultMove)
         bot.pathfinder.setGoal(new GoalBlock(bot.entity.position.x, bot.entity.position.y, bot.entity.position.z))
         bot.clearControlStates()
@@ -223,10 +215,10 @@ function text (username: string, message: string, whisper: boolean) {
 
     if (message.startsWith('_follow')) {
       if (bot.players[username] === undefined || bot.players[username].entity == null) {
-        bot.chat(username + ' it seems like your out of range.')
+        bot.chat(username + ' it seems like your out of range')
       } else {
         const target = bot.players[username].entity
-        bot.chat('Starting folowing ' + username + '.')
+        bot.chat('Starting to follow ' + username + '')
         bot.pathfinder.setMovements(defaultMove)
         bot.pathfinder.setGoal(new GoalFollow(target, 3), true)
       }
@@ -242,48 +234,48 @@ function text (username: string, message: string, whisper: boolean) {
 
         bot.pathfinder.setMovements(defaultMove)
         bot.pathfinder.setGoal(new GoalBlock(x, y, z))
-        bot.chat('Going to: x' + x + ' y' + y + ' z' + z)
+        bot.chat('Going to x' + x + ' y' + y + ' z' + z)
       } else if (cmd.length === 3) { // goto x z
         const x = parseInt(cmd[1], 10)
         const z = parseInt(cmd[2], 10)
 
         bot.pathfinder.setMovements(defaultMove)
         bot.pathfinder.setGoal(new GoalXZ(x, z))
-        bot.chat('Going to: x' + x + ' z' + z)
+        bot.chat('Going to x' + x + ' z' + z)
       } else if (cmd.length === 2) { // goto y
         const y = parseInt(cmd[1], 10)
 
         bot.pathfinder.setMovements(defaultMove)
         bot.pathfinder.setGoal(new GoalY(y))
-        bot.chat('Going to: y' + y)
+        bot.chat('Going to y' + y)
       }
     }
   }
 
   if (message.startsWith('_ping') && modules.ping) {
-    if (message === '_ping ') {
+    if (args.length === 0) {
       if (bot.players[username]) {
         bot.chat(prefix + username + ' your ping is: ' + bot.players[username].ping)
       } else {
-        bot.chat(prefix + 'Sorry i can only ping players.')
+        bot.chat(prefix + 'Sorry i can only ping players')
       }
-    } else {
-      if (args.length >= 1) {
-        if (bot.players[args[0]]) {
-          if (args[0] === username) {
-            if (bot.players[username]) {
-              bot.chat(prefix + username + ' your ping is: ' + bot.players[username].ping)
-            } else {
-              bot.chat(prefix + 'Sorry i can only ping players.')
-            }
+    } else if (args.length >= 1) {
+      if (bot.players[args[0]]) {
+        if (args[0] === username) {
+          if (bot.players[username]) {
+            bot.chat(prefix + username + ' your ping is: ' + bot.players[username].ping)
           } else {
-            bot.chat(prefix + 'The ping of ' + bot.players[args[0]].username + ' is: ' + bot.players[args[0]].ping)
+            bot.chat(prefix + 'Sorry i can only ping players')
           }
         } else {
-          bot.chat(prefix + "Sorry i can't find that player.")
+          bot.chat(prefix + 'The ping of ' + bot.players[args[0]].username + ' is: ' + bot.players[args[0]].ping)
         }
       } else {
-        bot.chat(prefix + 'Sorry you didnt use: _ping username')
+        if (bot.players[username]) {
+          bot.chat(prefix + username + ' your ping is: ' + bot.players[username].ping)
+        } else {
+          bot.chat(prefix + 'Sorry i can only ping players')
+        }
       }
     }
   }
@@ -335,106 +327,104 @@ function text (username: string, message: string, whisper: boolean) {
     fs.writeFileSync('./data/playerjoin.json', JSON.stringify(playerJoin, null, 4))
   }
 
-  if (!whisper) {
-    if (message.startsWith('_fm') || message.startsWith('_firstmessage')) {
-      if (args.length === 0) {
-        if (Object.keys(playerData).includes(username) && playerData[username][0] !== undefined) {
-          bot.chat(username + ' your first message which i recorded was: ' + playerData[username][0])
-        } else {
-          bot.chat(username + ' sorry i didnt record any messages from you.')
-        }
-      } else if (args.length === 1) {
-        if (Object.keys(playerData).includes(args[0]) && playerData[args[0]][0] !== undefined) {
-          bot.chat(username + ' here is the first message which i recorded from ' + args[0] + ': ' + playerData[args[0]][0])
-        } else {
-          bot.chat(username + ' sorry i didnt record any messages from ' + args[0] + '.')
-        }
-      } else if (args.length > 1) {
-        bot.chat('Please use: _fm username or _fm')
-      }
-    }
-
-    if (message.startsWith('_lm') || message.startsWith('_lastmessage')) {
-      if (args.length === 0) {
-        if (Object.keys(playerData).includes(username) && playerData[username][0] !== undefined) {
-          bot.chat(username + ' your last message which i recorded was: ' + playerData[username][playerData[username].length - 1])
-        } else {
-          bot.chat(username + ' sorry i didnt record any messages from you.')
-        }
-      } else if (args.length === 1) {
-        if (Object.keys(playerData).includes(args[0]) && playerData[args[0]][0] !== undefined) {
-          bot.chat(username + ' here is the last message which i recorded from ' + args[0] + ': ' + playerData[args[0]][playerData[args[0]].length - 1])
-        } else {
-          bot.chat(username + ' sorry i didnt record any messages from ' + args[0] + '.')
-        }
-      } else if (args.length > 1) {
-        bot.chat('Please use: _lm username or _lm')
-      }
-    }
-
-    if (message.startsWith('_rm') || message.startsWith('_randommessage')) {
-      if (args.length === 0) {
-        if (Object.keys(playerData).includes(username) && playerData[username][0] !== undefined) {
-          bot.chat(username + ' here is a random message which i recorded from you: ' + playerData[username][Math.round(Math.random() * (playerData[username].length - 1))])
-        } else {
-          bot.chat(username + ' sorry i didnt record any messages from you.')
-        }
-      } else if (args.length === 1) {
-        if (Object.keys(playerData).includes(args[0]) && playerData[args[0]][0] !== undefined) {
-          bot.chat(username + ' here is a random message which i recorded from ' + args[0] + ': ' + playerData[args[0]][Math.round(Math.random() * (playerData[args[0]].length - 1))])
-        } else {
-          bot.chat(username + ' sorry i didnt record any messages from ' + args[0] + '.')
-        }
-      } else if (args.length > 1) {
-        bot.chat('Please use: _rm username or _rm')
-      }
-
-    }
-
-    if (message.startsWith('_phrases') && username === 'Pistonmaster') {
-      bot.chat('Calculating amount of ALL saved phrases.')
-
-      playerData = require('./data/playerdata.json')
-      let amount1 = 0
-
-      for (const player1 in playerData) {
-        amount1 = amount1 + playerData[player1].length
-      }
-
-      setTimeout(() => bot.chat('Amount of ALL phrases: ' + amount1), 2000)
-    }
-
-    if (message.startsWith('_words') && username === 'Pistonmaster') {
-      bot.chat('Calculating amount of ALL saved words.')
-
-      let amount2 = 0
-
-      for (const player in playerData) {
-        for (const phraseIndex in playerData[player]) {
-          const phraseText = playerData[player][phraseIndex]
-          const phraseSplit = phraseText.split(' ')
-          amount2 = amount2 + phraseSplit.length
-        }
-      }
-
-      setTimeout(() => bot.chat('Amount of ALL words: ' + amount2), 2000)
-    }
-
-    if (!message.startsWith("_")) {
-      if (Object.keys(playerData).includes(username)) {
-        if (playerData[username].includes(message)) {
-          console.log('That message is already in the database. Not adding it.')
-        } else {
-          console.log('Player is in the database. Adding the message.')
-          playerData[username].push(message)
-        }
+  if (message.startsWith('_fm') || message.startsWith('_firstmessage')) {
+    if (args.length === 0) {
+      if (Object.keys(playerData).includes(username) && playerData[username][0] !== undefined) {
+        bot.chat(prefix + username + ' your first message which i recorded was: ' + playerData[username][0])
       } else {
-        console.log('Player is not in the database. Adding the player and the message to the database.')
-        playerData[username] = [message]
+        bot.chat(prefix + username + ' sorry i didnt record any messages from you.')
       }
-
-      fs.writeFileSync('./data/playerdata.json', JSON.stringify(playerData, null, 4))
+    } else if (args.length === 1) {
+      if (Object.keys(playerData).includes(args[0]) && playerData[args[0]][0] !== undefined) {
+        bot.chat(prefix + username + ' here is the first message which i recorded from ' + args[0] + ': ' + playerData[args[0]][0])
+      } else {
+        bot.chat(prefix + username + ' sorry i didnt record any messages from ' + args[0] + '.')
+      }
+    } else if (args.length > 1) {
+      bot.chat(prefix + 'Please use: _fm username or _fm')
     }
+  }
+
+  if (message.startsWith('_lm') || message.startsWith('_lastmessage')) {
+    if (args.length === 0) {
+      if (Object.keys(playerData).includes(username) && playerData[username][0] !== undefined) {
+        bot.chat(prefix + username + ' your last message which i recorded was: ' + playerData[username][playerData[username].length - 1])
+      } else {
+        bot.chat(prefix + username + ' sorry i didnt record any messages from you.')
+      }
+    } else if (args.length === 1) {
+      if (Object.keys(playerData).includes(args[0]) && playerData[args[0]][0] !== undefined) {
+        bot.chat(prefix + username + ' here is the last message which i recorded from ' + args[0] + ': ' + playerData[args[0]][playerData[args[0]].length - 1])
+      } else {
+        bot.chat(prefix + username + ' sorry i didnt record any messages from ' + args[0] + '.')
+      }
+    } else if (args.length > 1) {
+      bot.chat(prefix + 'Please use: _lm username or _lm')
+    }
+  }
+
+  if (message.startsWith('_rm') || message.startsWith('_randommessage')) {
+    if (args.length === 0) {
+      if (Object.keys(playerData).includes(username) && playerData[username][0] !== undefined) {
+        bot.chat(prefix + username + ' here is a random message which i recorded from you: ' + playerData[username][Math.round(Math.random() * (playerData[username].length - 1))])
+      } else {
+        bot.chat(prefix + username + ' sorry i didnt record any messages from you.')
+      }
+    } else if (args.length === 1) {
+      if (Object.keys(playerData).includes(args[0]) && playerData[args[0]][0] !== undefined) {
+        bot.chat(prefix + username + ' here is a random message which i recorded from ' + args[0] + ': ' + playerData[args[0]][Math.round(Math.random() * (playerData[args[0]].length - 1))])
+      } else {
+        bot.chat(prefix + username + ' sorry i didnt record any messages from ' + args[0] + '.')
+      }
+    } else if (args.length > 1) {
+      bot.chat(prefix + 'Please use: _rm username or _rm')
+    }
+  }
+
+  if (message.startsWith('_phrases') && username === 'Pistonmaster') {
+    playerData = require('./data/playerdata.json')
+
+    bot.chat(prefix + 'Calculating amount of all saved phrases.')
+    let amount1 = 0
+
+    for (const player1 in playerData) {
+      amount1 = amount1 + playerData[player1].length
+    }
+
+    setTimeout(() => bot.chat(prefix + 'Amount of ALL phrases: ' + amount1), 2000)
+  }
+
+  if (message.startsWith('_words') && username === 'Pistonmaster') {
+    playerData = require('./data/playerdata.json')
+
+    bot.chat(prefix + 'Calculating amount of all saved words.')
+    let amount2 = 0
+
+    for (const player in playerData) {
+      for (const phraseIndex in playerData[player]) {
+        const phraseText = playerData[player][phraseIndex]
+        const phraseSplit = phraseText.split(' ')
+        amount2 = amount2 + phraseSplit.length
+      }
+    }
+
+    setTimeout(() => bot.chat(prefix + 'Amount of ALL words: ' + amount2), 2000)
+  }
+
+  if (!whisper && !message.startsWith('_')) {
+    if (Object.keys(playerData).includes(username)) {
+      if (playerData[username].includes(message)) {
+        console.log('That message is already in the database. Not adding it.')
+      } else {
+        console.log('Player is in the database. Adding the message.')
+        playerData[username].push(message)
+      }
+    } else {
+      console.log('Player is not in the database. Adding the player and the message to the database.')
+      playerData[username] = [message]
+    }
+
+    fs.writeFileSync('./data/playerdata.json', JSON.stringify(playerData, null, 4))
   }
 }
 
@@ -518,7 +508,9 @@ bot.once('spawn', () => {
 
       if (totem !== null && totem.slot !== 45 && !isTotemInOffHand) {
         bot.equip(totem, 'off-hand', (err) => {
-          if (err != null) { console.log(err) }
+          if (err != null) {
+            console.log(err)
+          }
         })
       }
     }
@@ -625,7 +617,9 @@ function checkWeapon (window: Window): PrismarineItem | null {
 }
 
 client.on('ready', () => {
-  if (client.user === null) { return }
+  if (client.user === null) {
+    return
+  }
 
   console.log(`Logged in as ${client.user.tag}!`)
 
@@ -687,7 +681,9 @@ client.on('message', msg => {
           } else {
             const base64Image: string | undefined = pingResult.favicon.split(';base64,').pop()
 
-            if (base64Image === undefined) { return }
+            if (base64Image === undefined) {
+              return
+            }
 
             fs.writeFile(server + '.png', base64Image, { encoding: 'base64' }, function (err: NodeJS.ErrnoException | null) {
               if (err != null) {
