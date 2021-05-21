@@ -36,6 +36,80 @@
     "gamemode": true,
     "hi": true
   },
+  "2b4u": {
+    "coords": true,
+    "tps": true,
+    "navigation": true,
+    "ping": true,
+    "help": true,
+    "tp": true,
+    "rules": true,
+    "report": true,
+    "bible": true,
+    "about": true,
+    "armor": true,
+    "turn": true,
+    "bchelp": true,
+    "spam": false,
+    "eat": true,
+    "attack": true,
+    "totem": true,
+    "web": {
+      "activated": false,
+      "port": 8080
+    },
+    "viewer": {
+      "activated": false,
+      "port": 80
+    },
+    "inventory": {
+      "activated": false,
+      "port": 8880
+    },
+    "api": {
+      "activated": false,
+      "port": 8880
+    },
+    "gamemode": true,
+    "hi": true
+  },
+  "openanarchy": {
+    "coords": true,
+    "tps": true,
+    "navigation": true,
+    "ping": true,
+    "help": true,
+    "tp": true,
+    "rules": true,
+    "report": true,
+    "bible": true,
+    "about": true,
+    "armor": true,
+    "turn": true,
+    "bchelp": true,
+    "spam": false,
+    "eat": true,
+    "attack": true,
+    "totem": true,
+    "web": {
+      "activated": false,
+      "port": 8080
+    },
+    "viewer": {
+      "activated": false,
+      "port": 80
+    },
+    "inventory": {
+      "activated": false,
+      "port": 8880
+    },
+    "api": {
+      "activated": false,
+      "port": 8880
+    },
+    "gamemode": true,
+    "hi": true
+  },
   "localhost": {
     "coords": true,
     "tps": true,

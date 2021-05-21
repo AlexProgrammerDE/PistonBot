@@ -5,17 +5,17 @@
     "port": 25565,
     "bridge": "738497579624431686"
   },
-  "10b10t": {
+  "2b4u": {
     "MCversion": "1.12.2",
-    "host": "10b10t.org",
+    "host": "2b4u.cc",
     "port": 25565,
-    "bridge": "749687287805247608"
+    "bridge": "835406354080333825"
   },
-  "hisparquia": {
-    "MCversion": "1.12.2",
-    "host": "hisparquia.org",
+  "openanarchy": {
+    "MCversion": "1.16.5",
+    "host": "openanarchy.org",
     "port": 25565,
-    "bridge": "771775409439637534"
+    "bridge": "835406354080333825"
   },
   "localhost": {
     "MCversion": "1.16.5",

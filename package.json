@@ -6,6 +6,8 @@
   "scripts": {
     "start": "npm run 7b7t",
     "7b7t": "bash start.sh 7b7t",
+    "openanarchy": "bash start.sh openanarchy",
+    "2b4u": "bash start.sh 2b4u",
     "fix": "ts-standard --fix",
     "test": "ts-node index.ts localhost"
   },

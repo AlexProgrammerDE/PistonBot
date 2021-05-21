@@ -48,7 +48,8 @@ const time: number = 10
 
 const bot: PistonBot = mineflayer.createBot({
   host: config.host,
-  username: serverSecrets.username,
+  username: secretsFile.email,
+  password: secretsFile.password,
   port: config.port,
   version: config.MCversion,
   checkTimeoutInterval: 300 * 1000
