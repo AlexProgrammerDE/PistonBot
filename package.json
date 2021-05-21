@@ -29,7 +29,7 @@
     "discord.js": "^12.5.3",
     "express": "^4.17.1",
     "express-prettify": "^0.1.1",
-    "helmet": "^4.5.0",
+    "helmet": "^4.6.0",
     "minecraft-data": "^2.84.0",
     "minecraft-protocol": "^1.25.0",
     "minecraft-protocol-chat-parser": "^3.0.2",

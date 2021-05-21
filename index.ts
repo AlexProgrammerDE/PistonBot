@@ -155,7 +155,7 @@ function text (username: string, message: string, whisper: boolean) {
   }
 
   if (message.startsWith('_rules') && modules.rules) {
-    bot.chat(prefix + "No rules, but pls don't spam, hack, dupe, xray, swear or grief.")
+    bot.chat(prefix + "Fuck off!")
   }
 
   if (message.startsWith('_no')) {
@@ -294,13 +294,14 @@ function text (username: string, message: string, whisper: boolean) {
 
   if (message.startsWith('_urban ')) {
     const term = message.slice(7)
-    ud.term(term, (error: { message: any }, entries: Array<{ definition: any }>) => {
+    ud.term(term, (error: { message: string }, entries: Array<{ definition: string }>) => {
       if (error) {
         console.error(error.message)
       } else {
         let urbanAnswer = entries[0].definition
 
-        urbanAnswer = urbanAnswer.replace(/\r?\n|\r/g, '')
+        urbanAnswer = urbanAnswer.replace(/(\r\n|\r|\n)/g, '').substr(0, 200)
+        console.log(urbanAnswer)
 
         bot.chat('/tell ' + username + ' ' + urbanAnswer)
       }
@@ -560,7 +561,7 @@ bot.on('playerJoined', function (player) {
 
 // @ts-expect-error
 bot.on('path_update', (results) => {
-  console.log('I can get there in ' + results.path.length + ' moves. Computation took ' + results.time.toFixed(2) + ' ms.')
+  // console.log('I can get there in ' + results.path.length + ' moves. Computation took ' + results.time.toFixed(2) + ' ms.')
 })
 
 // @ts-expect-error
