@@ -3,9 +3,10 @@ import { Bot, createBot } from 'mineflayer'
 import { Entity, EntityType } from 'prismarine-entity'
 import { Window } from 'prismarine-windows'
 import { Item as PrismarineItem } from 'prismarine-item'
-import { Movements, pathfinder, Pathfinder } from 'mineflayer-pathfinder'
+import { Movements, pathfinder} from 'mineflayer-pathfinder'
 import Discord, { Channel, Client, MessageEmbed, TextChannel } from 'discord.js'
 import { NewPingResult } from 'minecraft-protocol'
+import { ChatMessage } from "prismarine-chat";
 
 import express from 'express'
 import fs from 'fs'
@@ -53,8 +54,6 @@ const bot: PistonBot = <PistonBot>createBot({
   version: config.version,
   checkTimeoutInterval: 300 * 1000
 })
-
-const parseJSON = require('minecraft-protocol-chat-parser')(bot.protocolVersion).parseJSON
 
 const mcData: MinecraftData.IndexedData = require('minecraft-data')(bot.version)
 
@@ -128,7 +127,11 @@ function text (username: string, message: string, whisper: boolean) {
       .setTimestamp()
       .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
     if (channel instanceof TextChannel) {
-      channel.send(embed)
+      channel.send(embed).then(() => {
+        console.log('Sent message to Discord')
+      }).catch(() => {
+        console.log('Failed to send message to Discord')
+      })
     }
   }
 
@@ -433,7 +436,7 @@ bot.on('chat', function (username, message) {
   text(username, message, false)
 })
 
-bot.on('whisper', function (username, message, translate, jsonMsg) {
+bot.on('whisper', function (username, message) {
   text(username, message, true)
 })
 
@@ -558,18 +561,17 @@ bot.on('playerJoined', function (player) {
   }
 })
 
-// @ts-expect-error
+/*
 bot.on('path_update', (results) => {
   // console.log('I can get there in ' + results.path.length + ' moves. Computation took ' + results.time.toFixed(2) + ' ms.')
 })
+*/
 
-// @ts-expect-error
 bot.on('autoeat_started', () => {
   console.log('Auto Eat started!')
   isEating = true
 })
 
-// @ts-expect-error
 bot.on('autoeat_stopped', () => {
   console.log('Auto Eat stopped!')
   isEating = false
@@ -617,14 +619,14 @@ function checkWeapon (window: Window): PrismarineItem | null {
   return weapon
 }
 
-client.on('ready', () => {
+client.on('ready', async () => {
   if (client.user === null) {
     return
   }
 
   console.log(`Logged in as ${client.user.tag}!`)
 
-  client.user.setPresence({
+  await client.user.setPresence({
     status: 'online',
     activity: {
       type: 'PLAYING',
@@ -634,19 +636,19 @@ client.on('ready', () => {
   })
 })
 
-client.on('message', msg => {
+client.on('message', async msg => {
   if (msg.member !== null && msg.member.user !== client.user) {
     if (msg.channel.id !== config.bridge) {
       // Commands that should only be triggered once!
       if (discordConfig.primaryserver === server) {
         if (msg.content.startsWith('_help')) {
-          msg.reply('PistonBot Discord help:  `_help, _discord, _invite, _info <server>, _playercount <server>, _players <server>, _tps <server>, _servers`')
+          await msg.reply('PistonBot Discord help:  `_help, _discord, _invite, _info <server>, _playercount <server>, _players <server>, _tps <server>, _servers`')
         } else if (msg.content.startsWith('_discord')) {
-          msg.reply('PistonBot Discord: https://discord.gg/9hNWscq')
+          await msg.reply('PistonBot Discord: https://discord.gg/9hNWscq')
         } else if (msg.content.startsWith('_invite')) {
-          msg.reply('Add PistonBot to YOUR discord server: https://bit.ly/33nSkz1')
+          await msg.reply('Add PistonBot to YOUR discord server: https://bit.ly/33nSkz1')
         } else if (msg.content.startsWith('_dservercount')) {
-          msg.reply('PistonBot is on ' + client.guilds.cache.size + ' servers.')
+          await msg.reply('PistonBot is on ' + client.guilds.cache.size + ' servers.')
         }
       }
 
@@ -659,7 +661,7 @@ client.on('message', msg => {
           }
         }
 
-        msg.reply(server + '\'s playercount: `' + playerCount + '`')
+        await msg.reply(server + '\'s playercount: `' + playerCount + '`')
       } else if (msg.content.startsWith('_players ' + server)) {
         let reply = 'Players on ' + server + ': \n```'
 
@@ -669,9 +671,9 @@ client.on('message', msg => {
 
         reply = reply + '```'
 
-        msg.reply(reply)
+        await msg.reply(reply)
       } else if (msg.content.startsWith('_info ' + server)) {
-        mc.ping({
+        await mc.ping({
           host: config.host,
           port: config.port,
           version: config.version
@@ -696,7 +698,7 @@ client.on('message', msg => {
               console.log('File created')
             })
 
-            console.log(parseJSON(pingResult.description))
+            console.log(new ChatMessage(JSON.parse(String(pingResult.description))).toString())
 
             const favicon = [new Discord.MessageAttachment('./' + server + '.png', server + '.png')]
             const embed = new Discord.MessageEmbed()
@@ -705,7 +707,7 @@ client.on('message', msg => {
               .attachFiles(favicon)
               .setThumbnail('attachment://' + server + '.png')
               .addField('Players:', pingResult.players.online.toString() + ' / ' + pingResult.players.max.toString())
-              .addField('Motd:', replaceColor(parseJSON(pingResult.description)))
+              .addField('Motd:', replaceColor(new ChatMessage(JSON.parse(String(pingResult.description))).toString()))
               .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
               .setURL(discordConfig.website)
               .setTimestamp(Date.now())
@@ -714,9 +716,9 @@ client.on('message', msg => {
           }
         })
       } else if (msg.content.startsWith('_tps ' + server)) {
-        msg.reply('Current tps: `' + bot.getTps() + '`')
+        await msg.reply('Current tps: `' + bot.getTps() + '`')
       } else if (msg.content.startsWith('_servers')) {
-        msg.channel.send('`' + server + '`')
+        await msg.channel.send('`' + server + '`')
       } else if (msg.content.startsWith('_setupbridge ' + server)) {
       }
     } else {
@@ -738,12 +740,8 @@ function replaceColor (msg: string): string {
 }
 
 interface PistonBot extends Bot {
-  pathfinder: Pathfinder
   viewer: any
   autoEat: any
   getTps: () => number
-}
-
-function isNumber (str: string): boolean {
-  return /^[0-9]*$/.test(str)
+  on: (event: string, listener: (...args: any[]) => void) => this
 }
