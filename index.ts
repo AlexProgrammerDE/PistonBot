@@ -3,9 +3,18 @@ import { Bot, createBot } from 'mineflayer'
 import { Entity, EntityType } from 'prismarine-entity'
 import { Window } from 'prismarine-windows'
 import { Item as PrismarineItem } from 'prismarine-item'
-import {Movements, pathfinder, Pathfinder} from 'mineflayer-pathfinder'
-import { Channel, Client, MessageEmbed, TextChannel } from 'discord.js'
+import { Movements, pathfinder, Pathfinder } from 'mineflayer-pathfinder'
+import Discord, { Channel, Client, MessageEmbed, TextChannel } from 'discord.js'
 import { NewPingResult } from 'minecraft-protocol'
+
+import express from 'express'
+import fs from 'fs'
+
+import helmet from 'helmet'
+
+import commands from './data/commands'
+import bible from './data/bible'
+import spam from './data/spam'
 
 const inventoryViewer = require('mineflayer-web-inventory')
 const tpsPlugin = require('mineflayer-tps')(require('mineflayer'))
@@ -13,19 +22,9 @@ const armorManager = require('mineflayer-armor-manager')
 const mc = require('minecraft-protocol')
 const autoEat = require('mineflayer-auto-eat')
 const viewer = require('prismarine-viewer').mineflayer
-const { GoalNear, GoalBlock, GoalXZ, GoalY, GoalFollow } = require('mineflayer-pathfinder').goals
-
-import express from 'express'
+const {GoalBlock, GoalXZ, GoalY, GoalFollow } = require('mineflayer-pathfinder').goals
 const pretty = require('express-prettify')
-import fs from 'fs'
 const ud = require('urban-dictionary')
-import Discord from 'discord.js'
-
-import helmet from "helmet";
-
-import commands from "./data/commands";
-import bible from "./data/bible";
-import spam from "./data/spam";
 
 const client: Client = new Discord.Client({ disableMentions: 'all' })
 const app = express()
@@ -152,7 +151,7 @@ function text (username: string, message: string, whisper: boolean) {
   }
 
   if (message.startsWith('_rules') && modules.rules) {
-    bot.chat(prefix + "Fuck off!")
+    bot.chat(prefix + 'Fuck off!')
   }
 
   if (message.startsWith('_no')) {
@@ -297,7 +296,7 @@ function text (username: string, message: string, whisper: boolean) {
       } else {
         let urbanAnswer = entries[0].definition
 
-        urbanAnswer = urbanAnswer.replace(/(\r\n|\r|\n)/g, '').substr(0, 200)
+        urbanAnswer = urbanAnswer.replace(/(\r\n|\r|\n)/g, '').substring(0, 200)
         console.log(urbanAnswer)
 
         bot.chat('/tell ' + username + ' ' + urbanAnswer)
@@ -431,7 +430,7 @@ bot.on('chat', function (username, message) {
   text(username, message, false)
 })
 
-bot.on('whisper', function (username, message, a, jsonMsg) {
+bot.on('whisper', function (username, message, translate, jsonMsg) {
   text(username, message, true)
 })
 
@@ -469,12 +468,12 @@ bot.once('spawn', () => {
     })
   }
 
-  setInterval(() => {
+  setInterval(async () => {
     if (!isEating && modules.attack) {
       const weapon = checkWeapon(bot.inventory)
 
       if (weapon != null) {
-        bot.equip(weapon, 'hand', (err) => {
+        await bot.equip(weapon, 'hand', (err) => {
           if (err != null) {
             console.log(err)
           }
@@ -485,9 +484,9 @@ bot.once('spawn', () => {
     const entity = nearestEntity(null)
     if (entity != null) {
       if (entity.type === 'player') {
-        bot.lookAt(entity.position.offset(0, 1, 0))
+        await bot.lookAt(entity.position.offset(0, 1, 0))
       } else if (entity.type === 'mob') {
-        bot.lookAt(entity.position)
+        await bot.lookAt(entity.position)
       }
 
       if (entity.type === 'mob' && entity.kind === 'Hostile mobs' && modules.attack) {
@@ -496,7 +495,7 @@ bot.once('spawn', () => {
     }
   }, 100)
 
-  setInterval(() => {
+  setInterval(async () => {
     if (modules.totem) {
       const totem: PrismarineItem | null = bot.inventory.findInventoryItem(mcData.itemsByName.totem_of_undying.id, null, false)
       let isTotemInOffHand = false
@@ -506,7 +505,7 @@ bot.once('spawn', () => {
       }
 
       if (totem !== null && totem.slot !== 45 && !isTotemInOffHand) {
-        bot.equip(totem, 'off-hand', (err) => {
+        await bot.equip(totem, 'off-hand', (err) => {
           if (err != null) {
             console.log(err)
           }
@@ -678,8 +677,7 @@ client.on('message', msg => {
             console.log(err)
             msg.reply('Sorry something went wrong. :(')
           } else {
-            if (pingResult.favicon === undefined)
-              return
+            if (pingResult.favicon === undefined) { return }
 
             const base64Image: string | undefined = pingResult.favicon.split(';base64,').pop()
 
