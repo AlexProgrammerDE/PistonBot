@@ -1,41 +1,38 @@
 import MinecraftData from 'minecraft-data'
-import { Bot } from 'mineflayer'
+import { Bot, createBot } from 'mineflayer'
 import { Entity, EntityType } from 'prismarine-entity'
 import { Window } from 'prismarine-windows'
 import { Item as PrismarineItem } from 'prismarine-item'
-import { Pathfinder } from 'mineflayer-pathfinder'
+import {Movements, pathfinder, Pathfinder} from 'mineflayer-pathfinder'
 import { Channel, Client, MessageEmbed, TextChannel } from 'discord.js'
 import { NewPingResult } from 'minecraft-protocol'
 
-const mineflayer = require('mineflayer')
 const inventoryViewer = require('mineflayer-web-inventory')
-const tpsPlugin = require('mineflayer-tps')(mineflayer)
+const tpsPlugin = require('mineflayer-tps')(require('mineflayer'))
 const armorManager = require('mineflayer-armor-manager')
 const mc = require('minecraft-protocol')
 const autoEat = require('mineflayer-auto-eat')
 const viewer = require('prismarine-viewer').mineflayer
-const pathfinder = require('mineflayer-pathfinder').pathfinder
-const Movements = require('mineflayer-pathfinder').Movements
 const { GoalNear, GoalBlock, GoalXZ, GoalY, GoalFollow } = require('mineflayer-pathfinder').goals
 
-const express = require('express')
+import express from 'express'
 const pretty = require('express-prettify')
-const helmet = require('helmet')
-
-const fs = require('fs')
+import fs from 'fs'
 const ud = require('urban-dictionary')
-const Discord = require('discord.js')
+import Discord from 'discord.js'
 
-const commands = require('./data/commands')
-const bible = require('./data/bible')
-const spam = require('./data/spam')
+import helmet from "helmet";
+
+import commands from "./data/commands";
+import bible from "./data/bible";
+import spam from "./data/spam";
 
 const client: Client = new Discord.Client({ disableMentions: 'all' })
 const app = express()
 const server: string = process.argv[2]
 
 const secretsFile = require('./secrets.json')
-const serverSecrets = require('./secrets.json')[server]
+const serverSecrets = secretsFile[server]
 const modules = require('./modules.json')[server]
 const config = require('./config.json')[server]
 
@@ -46,7 +43,7 @@ let end = false
 
 const time: number = 10
 
-const bot: PistonBot = mineflayer.createBot({
+const bot: PistonBot = <PistonBot>createBot({
   host: config.host,
   username: secretsFile.email,
   password: secretsFile.password,
@@ -681,6 +678,9 @@ client.on('message', msg => {
             console.log(err)
             msg.reply('Sorry something went wrong. :(')
           } else {
+            if (pingResult.favicon === undefined)
+              return
+
             const base64Image: string | undefined = pingResult.favicon.split(';base64,').pop()
 
             if (base64Image === undefined) {
@@ -697,7 +697,7 @@ client.on('message', msg => {
 
             console.log(parseJSON(pingResult.description))
 
-            const favicon = new Discord.MessageAttachment('./' + server + '.png', server + '.png')
+            const favicon = [new Discord.MessageAttachment('./' + server + '.png', server + '.png')]
             const embed = new Discord.MessageEmbed()
               .setTitle(server + '\'s Status')
               .setColor('#C970D9')

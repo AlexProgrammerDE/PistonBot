@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   proverbs: [
     'Better a dry crust with peace and quiet than a house full of feasting, with strife.',
     'A prudent servant will rule over a disgraceful son and will share the inheritance as one of the family.',

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   bc: [
     'Use "_coords" to get my coordinates!',
     'Use "_tps" to see the tps!',
