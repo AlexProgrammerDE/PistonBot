@@ -2699,13 +2699,6 @@ prismarine-chunk@^1.22.0, prismarine-chunk@^1.29.0:
     vec3 "^0.1.3"
     xxhash-wasm "^0.4.2"
 
-prismarine-entity@^1.1.0:
-  version "1.2.0"
-  resolved "https://registry.npmjs.org/prismarine-entity/-/prismarine-entity-1.2.0.tgz"
-  integrity sha512-4dQ9LYl6HDJQrwZHjSKU4D5VNyHRnfrjcw7eVLlbRPkuR50utW5mmfPi4ys9U7tHNmGWHC/cwjH9xzT75LUovQ==
-  dependencies:
-    vec3 "^0.1.4"
-
 prismarine-entity@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/prismarine-entity/-/prismarine-entity-2.1.0.tgz"

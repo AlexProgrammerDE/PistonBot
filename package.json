@@ -37,7 +37,7 @@
     "mineflayer-tps": "^1.0.1",
     "mineflayer-web-inventory": "^1.4.0",
     "prismarine-chat": "^1.0.3",
-    "prismarine-entity": "^1.1.0",
+    "prismarine-entity": "^2.0.0",
     "prismarine-registry": "^1.1.0",
     "prismarine-viewer": "^1.19.3",
     "request": "^2.88.2",
