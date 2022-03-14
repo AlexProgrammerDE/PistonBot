@@ -1,10 +1,11 @@
 # PistonBot
 
-[![Discord embed](https://discordapp.com/api/guilds/726387096578818071/embed.png)](https://discord.gg/59wAuGy)
+[![Discord embed](https://discordapp.com/api/guilds/739784741124833301/embed.png)](https://discord.gg/CDrcxzH)
 
 My own minecraft bot.
 
 ---
+
 **This software is provided as is and without any support for getting it running!**
 
 ---
@@ -12,4 +13,4 @@ My own minecraft bot.
 Links:
 
 * Website: https://bot.pistonmaster.net/
-* Discord: https://discord.gg/59wAuGy
+* Discord: https://discord.gg/CDrcxzH
