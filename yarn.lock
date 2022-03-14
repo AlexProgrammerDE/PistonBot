@@ -3459,10 +3459,10 @@ unpipe@1.0.0, unpipe@~1.0.0:
   resolved "https://registry.npmjs.org/unpipe/-/unpipe-1.0.0.tgz"
   integrity sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw=
 
-urban-dictionary@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/urban-dictionary/-/urban-dictionary-2.2.1.tgz"
-  integrity sha512-wnR3QWRlIXAtzf/QNaCHABsksdw05og/ZCEabB+S2C9G02wfDZvSz5l5Mh/Ip/Tk7mYNO09vbUaaFxH7MGHJsg==
+urban-dictionary@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/urban-dictionary/-/urban-dictionary-3.0.2.tgz#8028350dfd57e80a17b4fdac1cbc81f0672a38bc"
+  integrity sha512-hoYevSg6JNr8NiYRtxz7sqBDBu4RL52Bd45L2jQQ44Rwrz6ACmnKnRcUkH2TIQRILN+viZMT/MYYU3OyBz68AA==
 
 uri-js@^4.2.2:
   version "4.4.1"
