@@ -2228,7 +2228,7 @@ minecraft-assets@^1.6.0:
   resolved "https://registry.npmjs.org/minecraft-assets/-/minecraft-assets-1.9.0.tgz"
   integrity sha512-KtvIRd9gcKlxbvrswGv1Ap9k7tVs//QW2ukp+8vJ28miYwkhUmYfjTZyElIG8KUXV/46wL2kDzLH8SJbXQ56Mg==
 
-minecraft-data@^2.100.1, minecraft-data@^2.106.0, minecraft-data@^2.109.0, minecraft-data@^2.111.0, minecraft-data@^2.113.1, minecraft-data@^2.114.1, minecraft-data@^2.118.0, minecraft-data@^2.62.1, minecraft-data@^2.65.0, minecraft-data@^2.70.0, minecraft-data@^2.74.0, minecraft-data@^2.75.0, minecraft-data@^2.84.0, minecraft-data@^2.88.0, minecraft-data@^2.93.0:
+minecraft-data@^2.100.1, minecraft-data@^2.106.0, minecraft-data@^2.109.0, minecraft-data@^2.111.0, minecraft-data@^2.113.1, minecraft-data@^2.114.1, minecraft-data@^2.118.0, minecraft-data@^2.62.1, minecraft-data@^2.65.0, minecraft-data@^2.74.0, minecraft-data@^2.75.0, minecraft-data@^2.84.0, minecraft-data@^2.88.0, minecraft-data@^2.93.0:
   version "2.220.0"
   resolved "https://registry.npmjs.org/minecraft-data/-/minecraft-data-2.220.0.tgz"
   integrity sha512-6/1TxrX9jf8z8aRxWtB9IiDy6O3t6Yor/qGxCDB8ibahf/Ss5HNaPjjjjATLrdT2KrIWywv5oc4eSZ2bfXlDmQ==
@@ -2238,7 +2238,7 @@ minecraft-folder-path@^1.2.0:
   resolved "https://registry.npmjs.org/minecraft-folder-path/-/minecraft-folder-path-1.2.0.tgz"
   integrity sha512-qaUSbKWoOsH9brn0JQuBhxNAzTDMwrOXorwuRxdJKKKDYvZhtml+6GVCUrY5HRiEsieBEjCUnhVpDuQiKsiFaw==
 
-minecraft-protocol@^1.17.0, minecraft-protocol@^1.25.0:
+minecraft-protocol@^1.25.0, minecraft-protocol@^1.31.0:
   version "1.32.0"
   resolved "https://registry.npmjs.org/minecraft-protocol/-/minecraft-protocol-1.32.0.tgz"
   integrity sha512-KIg/SnKagSe2GtVjvWealobTkC1VLPCRYpzIZd4l+rbo3fND1e1NBmfZVsawbByYwK6/STKODkMJgk763FejTQ==
@@ -2306,26 +2306,27 @@ mineflayer-web-inventory@^1.4.0:
     socket.io "^3.1.1"
     vec3 "^0.1.7"
 
-mineflayer@^2.41.0:
-  version "2.41.0"
-  resolved "https://registry.npmjs.org/mineflayer/-/mineflayer-2.41.0.tgz"
-  integrity sha512-IFFy4NgF24FU2PkAwazJphl2F+3gpbpN578ex0sq1XfcBBRge3kCz1UC2KDMjKI+V/8vffOL+OEnug9jt3f7Vw==
+mineflayer@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/mineflayer/-/mineflayer-4.1.0.tgz#12d0628bb3ff1d0e5341b968f116beeac62ab573"
+  integrity sha512-Av6qote/cmWrlCB4WArleKHmh8zrU4SYOygdLVi9OglUbsUnaIGPkbSrneL0vhW/io+1WR6/OjHts8W8Hc73Dg==
   dependencies:
-    minecraft-data "^2.70.0"
-    minecraft-protocol "^1.17.0"
-    prismarine-biome "^1.1.0"
-    prismarine-block "^1.6.0"
-    prismarine-chat "^1.0.0"
-    prismarine-chunk "^1.20.3"
-    prismarine-entity "^1.0.0"
-    prismarine-item "^1.5.0"
-    prismarine-physics "^1.0.4"
+    minecraft-data "^2.114.1"
+    minecraft-protocol "^1.31.0"
+    prismarine-biome "^1.1.1"
+    prismarine-block "^1.13.1"
+    prismarine-chat "^1.3.3"
+    prismarine-chunk "^1.29.0"
+    prismarine-entity "^2.0.0"
+    prismarine-item "^1.11.0"
+    prismarine-nbt "^2.0.0"
+    prismarine-physics "^1.3.1"
     prismarine-recipe "^1.1.0"
-    prismarine-windows "^1.5.0"
-    prismarine-world "^3.2.0"
-    protodef "^1.8.0"
-    typed-emitter "^1.2.0"
-    vec3 "^0.1.6"
+    prismarine-windows "^2.4.2"
+    prismarine-world "^3.6.0"
+    protodef "^1.14.0"
+    typed-emitter "^1.0.0"
+    vec3 "^0.1.7"
 
 minimatch@^3.0.4, minimatch@^3.1.2:
   version "3.1.2"
@@ -2635,14 +2636,14 @@ prismarine-auth@^1.1.0:
     smart-buffer "^4.1.0"
     uuid-1345 "^1.0.2"
 
-prismarine-biome@^1.1.0, prismarine-biome@^1.2.0:
+prismarine-biome@^1.1.0, prismarine-biome@^1.1.1, prismarine-biome@^1.2.0:
   version "1.2.1"
   resolved "https://registry.npmjs.org/prismarine-biome/-/prismarine-biome-1.2.1.tgz"
   integrity sha512-bfClX/NKMDkmA//0o1za3Nmcd1krmnv8hmjIYRS435dQvDJ2MKmCkDGUJ5CTy2epB976CDgzj9h1JT1a8MUn1Q==
 
-prismarine-block@^1.14.1, prismarine-block@^1.6.0, prismarine-block@^1.7.3:
+prismarine-block@^1.13.1, prismarine-block@^1.14.1, prismarine-block@^1.7.3:
   version "1.15.0"
-  resolved "https://registry.npmjs.org/prismarine-block/-/prismarine-block-1.15.0.tgz"
+  resolved "https://registry.yarnpkg.com/prismarine-block/-/prismarine-block-1.15.0.tgz#ce727c8e1a6f70daab72f1253da85c6e55fb1dcc"
   integrity sha512-h9vJK9N2sg5FaZbWf4oBQK+TWqFlDc7grRUPRpGt8Lv6948x2u6JYgcSrRGY1LUsyR8B1ii/M8b686GEU6VPbA==
   dependencies:
     prismarine-biome "^1.1.0"
@@ -2651,7 +2652,7 @@ prismarine-block@^1.14.1, prismarine-block@^1.6.0, prismarine-block@^1.7.3:
     prismarine-nbt "^2.0.0"
     prismarine-registry "^1.1.0"
 
-prismarine-chat@^1.0.0, prismarine-chat@^1.0.3, prismarine-chat@^1.4.1, prismarine-chat@^1.5.0:
+prismarine-chat@^1.0.3, prismarine-chat@^1.3.3, prismarine-chat@^1.4.1, prismarine-chat@^1.5.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/prismarine-chat/-/prismarine-chat-1.6.0.tgz"
   integrity sha512-vgA0Iq2G4/GE4VNvtvQL/3XCHzCXi8rCb4WWyM2DR4q/7vg+4G93ZtKxphy7wlgPbB3qzQLneZz99O67TkZahA==
@@ -2662,9 +2663,9 @@ prismarine-chat@^1.0.0, prismarine-chat@^1.0.3, prismarine-chat@^1.4.1, prismari
     prismarine-nbt "^2.0.0"
     sprintf-js "^1.1.2"
 
-prismarine-chunk@^1.20.3, prismarine-chunk@^1.22.0:
+prismarine-chunk@^1.22.0, prismarine-chunk@^1.29.0:
   version "1.30.0"
-  resolved "https://registry.npmjs.org/prismarine-chunk/-/prismarine-chunk-1.30.0.tgz"
+  resolved "https://registry.yarnpkg.com/prismarine-chunk/-/prismarine-chunk-1.30.0.tgz#788a5a82b1e32e7e001e7c722b43abd04ff47dbe"
   integrity sha512-hq8Vtslm79nI/KnMWwbd5nHEUURF4kkIW1UPjNI5YzwFKJcb8Z6kRkozCxFr8L1Qk/A7fxdKGHaRxTMZeor+1g==
   dependencies:
     minecraft-data "^2.113.1"
@@ -2676,7 +2677,7 @@ prismarine-chunk@^1.20.3, prismarine-chunk@^1.22.0:
     vec3 "^0.1.3"
     xxhash-wasm "^0.4.2"
 
-prismarine-entity@^1.0.0, prismarine-entity@^1.1.0:
+prismarine-entity@^1.1.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/prismarine-entity/-/prismarine-entity-1.2.0.tgz"
   integrity sha512-4dQ9LYl6HDJQrwZHjSKU4D5VNyHRnfrjcw7eVLlbRPkuR50utW5mmfPi4ys9U7tHNmGWHC/cwjH9xzT75LUovQ==
@@ -2693,7 +2694,7 @@ prismarine-entity@^2.0.0:
     prismarine-item "^1.11.2"
     vec3 "^0.1.4"
 
-prismarine-item@^1.10.0, prismarine-item@^1.10.1, prismarine-item@^1.11.2, prismarine-item@^1.4.0, prismarine-item@^1.5.0:
+prismarine-item@^1.10.0, prismarine-item@^1.10.1, prismarine-item@^1.11.0, prismarine-item@^1.11.2, prismarine-item@^1.5.0:
   version "1.11.3"
   resolved "https://registry.npmjs.org/prismarine-item/-/prismarine-item-1.11.3.tgz"
   integrity sha512-3zgExGF6hektrRlvarkh+il2wp4EyPzi7oJiOxabeaqSfc17taBbJubPJeEZHdi7sy4sB0diF10PgrESD8mc3Q==
@@ -2708,9 +2709,9 @@ prismarine-nbt@^2.0.0:
   dependencies:
     protodef "^1.9.0"
 
-prismarine-physics@^1.0.4, prismarine-physics@^1.2.2:
+prismarine-physics@^1.2.2, prismarine-physics@^1.3.1:
   version "1.4.0"
-  resolved "https://registry.npmjs.org/prismarine-physics/-/prismarine-physics-1.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/prismarine-physics/-/prismarine-physics-1.4.0.tgz#7eddf5d328dd816ebac73e0d0ef4bc5ec02e8aec"
   integrity sha512-RiBl/9WFg5TBwoAj1pDWEBF4A7iauJ4WK3JoUfOsr3tO9EPGNR8pEPMJ2VftG2OzDIz70jjsg7L8ISyBva8Ncw==
   dependencies:
     minecraft-data "^2.100.1"
@@ -2748,24 +2749,17 @@ prismarine-viewer@^1.19.3:
     three.meshline "^1.3.0"
     vec3 "^0.1.7"
 
-prismarine-windows@^1.5.0:
-  version "1.6.0"
-  resolved "https://registry.npmjs.org/prismarine-windows/-/prismarine-windows-1.6.0.tgz"
-  integrity sha512-026LG1yR76Xb62kM+W83IWT7Wy2yKplllbXNFBF2m0Lr4k4YpYKnpLb8tRft8MLOLRbYAt/KnxE/YKvRZul7kw==
-  dependencies:
-    prismarine-item "^1.4.0"
-
-prismarine-windows@^2.4.1:
+prismarine-windows@^2.4.1, prismarine-windows@^2.4.2:
   version "2.4.3"
-  resolved "https://registry.npmjs.org/prismarine-windows/-/prismarine-windows-2.4.3.tgz"
+  resolved "https://registry.yarnpkg.com/prismarine-windows/-/prismarine-windows-2.4.3.tgz#5093182ce6298c866ae768f0813afabc0b790812"
   integrity sha512-cwY8Pw8LcfWmTMlxg88hwj4JbEqqKivuwbWnu/jy9Qd6dPI80AtLBSrxsdVkJ9siy2imc1xP5vs+RxInzZo+TA==
   dependencies:
     minecraft-data "^2.74.0"
     prismarine-item "^1.5.0"
 
-prismarine-world@^3.2.0, prismarine-world@^3.3.1:
+prismarine-world@^3.3.1, prismarine-world@^3.6.0:
   version "3.6.0"
-  resolved "https://registry.npmjs.org/prismarine-world/-/prismarine-world-3.6.0.tgz"
+  resolved "https://registry.yarnpkg.com/prismarine-world/-/prismarine-world-3.6.0.tgz#9b9631f09f7ddd4e1cee142d6537e2ab0335ded7"
   integrity sha512-rAudKWNOfiDrDaBlXx9/5B4CO/kc5G1RBq3GFAu1ov6GwUq8Ib8KXYeHPsoJwN3tfVDuFaJjncgsShqdoSmP0w==
   dependencies:
     vec3 "^0.1.7"
@@ -2791,7 +2785,7 @@ protodef-validator@^1.3.0:
   dependencies:
     ajv "^6.5.4"
 
-protodef@^1.8.0, protodef@^1.9.0:
+protodef@^1.14.0, protodef@^1.8.0, protodef@^1.9.0:
   version "1.15.0"
   resolved "https://registry.npmjs.org/protodef/-/protodef-1.15.0.tgz"
   integrity sha512-bZ2Omw8dT+DACjJHLrBWZlqN4MlT9g9oSpJDdkUAJOStUzgJp+Zn42FJfPUdwutUxjaxA0PftN0PDlNa2XbneA==
@@ -3435,9 +3429,9 @@ type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
-typed-emitter@^1.2.0:
+typed-emitter@^1.0.0:
   version "1.4.0"
-  resolved "https://registry.npmjs.org/typed-emitter/-/typed-emitter-1.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/typed-emitter/-/typed-emitter-1.4.0.tgz#38c6bf1224e764906bb20cb0b458fa914100607c"
   integrity sha512-weBmoo3HhpKGgLBOYwe8EB31CzDFuaK7CCL+axXhUYhn4jo6DSkHnbefboCF5i4DQ2aMFe0C/FdTWcPdObgHyg==
 
 typescript@^4.2.4:
@@ -3514,7 +3508,7 @@ vary@^1, vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vec3@^0.1.3, vec3@^0.1.4, vec3@^0.1.6, vec3@^0.1.7:
+vec3@^0.1.3, vec3@^0.1.4, vec3@^0.1.7:
   version "0.1.7"
   resolved "https://registry.npmjs.org/vec3/-/vec3-0.1.7.tgz"
   integrity sha512-EZSeXBL+L3go2wWwtQQse4fEcNGIQjT14qvi4LYVj1ifZt/J5XZ1QZqkDuOVVH07YwTEIFbsAv3pzwUpF7x9Wg==
