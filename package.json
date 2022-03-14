@@ -47,7 +47,7 @@
     "urban-dictionary": "^3.0.0"
   },
   "devDependencies": {
-    "ts-standard": "10.0.0",
+    "ts-standard": "11.0.0",
     "@types/express": "4.17.13",
     "eslint": "8.11.0",
     "@typescript-eslint/parser": "5.14.0",
