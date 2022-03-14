@@ -27,7 +27,7 @@
     "discord.js": "^13.0.0",
     "express": "^4.17.1",
     "express-prettify": "^0.1.1",
-    "helmet": "^4.6.0",
+    "helmet": "^5.0.0",
     "minecraft-data": "^2.84.0",
     "minecraft-protocol": "^1.25.0",
     "mineflayer": "^2.41.0",
