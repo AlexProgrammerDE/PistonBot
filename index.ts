@@ -32,10 +32,13 @@ const server: string = process.argv[2]
 
 const secretsFile = require('./secrets.json')
 const serverSecrets = secretsFile[server]
-const modules = require('./modules.json')[server]
-const config = require('./config.json')[server]
+import {serverModules} from './modules'
 
-const discordConfig = require('./discord.json')
+import discordConfig from "./discord.json";
+
+const modules = serverModules[server]
+import {serverConfigs} from './config'
+const config = serverConfigs[server]
 
 let isEating = false
 let end = false
@@ -47,7 +50,7 @@ const bot: PistonBot = <PistonBot>createBot({
   username: secretsFile.email,
   password: secretsFile.password,
   port: config.port,
-  version: config.MCversion,
+  version: config.version,
   checkTimeoutInterval: 300 * 1000
 })
 
@@ -434,7 +437,7 @@ bot.on('whisper', function (username, message, translate, jsonMsg) {
   text(username, message, true)
 })
 
-if (modules.web.activated) {
+if (modules.web) {
   app.use(helmet())
   app.use(pretty({ query: 'pretty' }))
 
@@ -452,11 +455,11 @@ bot.on('login', function () {
 })
 
 bot.once('spawn', () => {
-  if (modules.inventory.activated) {
+  if (modules.inventory) {
     inventoryViewer(bot, { port: modules.inventory.port })
   }
 
-  if (modules.viewer.activated) {
+  if (modules.viewer) {
     viewer(bot, { port: modules.viewer.port })
     // Draw the path followed by the bot
     const path = [bot.entity.position.clone()]
@@ -671,7 +674,7 @@ client.on('message', msg => {
         mc.ping({
           host: config.host,
           port: config.port,
-          version: config.MCversion
+          version: config.version
         }, function (err: Error, pingResult: NewPingResult) {
           if (err) {
             console.log(err)

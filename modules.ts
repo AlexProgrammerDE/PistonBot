@@ -1,4 +1,42 @@
-{
+export interface ModuleType {
+  [server: string]: ServerConfig;
+}
+
+export interface ServerConfig {
+  coords: boolean,
+  tps: boolean,
+  navigation: boolean,
+  ping: boolean,
+  help: boolean,
+  tp: boolean,
+  rules: boolean,
+  report: boolean,
+  bible: boolean,
+  about: boolean,
+  armor: boolean,
+  turn: boolean,
+  bchelp: boolean,
+  spam: boolean,
+  eat: boolean,
+  attack: boolean,
+  totem: boolean,
+  web?: {
+    port: number
+  },
+  viewer?: {
+    port: number
+  },
+  inventory?: {
+    port: number
+  },
+  api?: {
+    port: number
+  },
+  gamemode: boolean,
+  hi: boolean
+}
+
+export const serverModules: ModuleType = {
   "7b7t": {
     "coords": true,
     "tps": true,
@@ -18,19 +56,15 @@
     "attack": true,
     "totem": true,
     "web": {
-      "activated": true,
       "port": 8080
     },
     "viewer": {
-      "activated": true,
       "port": 8880
     },
     "inventory": {
-      "activated": true,
       "port": 2095
     },
     "api": {
-      "activated": false,
       "port": 8880
     },
     "gamemode": true,
@@ -54,22 +88,6 @@
     "eat": true,
     "attack": true,
     "totem": true,
-    "web": {
-      "activated": false,
-      "port": 8080
-    },
-    "viewer": {
-      "activated": false,
-      "port": 80
-    },
-    "inventory": {
-      "activated": false,
-      "port": 8880
-    },
-    "api": {
-      "activated": false,
-      "port": 8880
-    },
     "gamemode": true,
     "hi": true
   },
@@ -91,22 +109,6 @@
     "eat": true,
     "attack": true,
     "totem": true,
-    "web": {
-      "activated": false,
-      "port": 8080
-    },
-    "viewer": {
-      "activated": false,
-      "port": 80
-    },
-    "inventory": {
-      "activated": false,
-      "port": 8880
-    },
-    "api": {
-      "activated": false,
-      "port": 8880
-    },
     "gamemode": true,
     "hi": true
   },
@@ -128,22 +130,6 @@
     "eat": true,
     "attack": true,
     "totem": true,
-    "web": {
-      "activated": false,
-      "port": 8080
-    },
-    "viewer": {
-      "activated": false,
-      "port": 80
-    },
-    "inventory": {
-      "activated": false,
-      "port": 8880
-    },
-    "api": {
-      "activated": false,
-      "port": 8880
-    },
     "gamemode": true,
     "hi": true
   }
