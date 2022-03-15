@@ -3,10 +3,10 @@ import { Bot, createBot } from 'mineflayer'
 import { Entity, EntityType } from 'prismarine-entity'
 import { Window } from 'prismarine-windows'
 import { Item as PrismarineItem } from 'prismarine-item'
-import { Movements, pathfinder} from 'mineflayer-pathfinder'
-import Discord, { Channel, Client, MessageEmbed, TextChannel } from 'discord.js'
+import { Movements, pathfinder } from 'mineflayer-pathfinder'
+import Discord, { AnyChannel, Client, Intents, MessageEmbed, TextChannel } from 'discord.js'
 import { NewPingResult } from 'minecraft-protocol'
-import { ChatMessage } from "prismarine-chat";
+import { ChatMessage } from 'prismarine-chat'
 
 import express from 'express'
 import fs from 'fs'
@@ -16,6 +16,10 @@ import helmet from 'helmet'
 import commands from './data/commands'
 import bible from './data/bible'
 import spam from './data/spam'
+import { serverModules } from './modules'
+
+import discordConfig from './discord.json'
+import { serverConfigs } from './config'
 
 const inventoryViewer = require('mineflayer-web-inventory')
 const tpsPlugin = require('mineflayer-tps')(require('mineflayer'))
@@ -23,22 +27,18 @@ const armorManager = require('mineflayer-armor-manager')
 const mc = require('minecraft-protocol')
 const autoEat = require('mineflayer-auto-eat')
 const viewer = require('prismarine-viewer').mineflayer
-const {GoalBlock, GoalXZ, GoalY, GoalFollow } = require('mineflayer-pathfinder').goals
+const { GoalBlock, GoalXZ, GoalY, GoalFollow } = require('mineflayer-pathfinder').goals
 const pretty = require('express-prettify')
 const ud = require('urban-dictionary')
 
-const client: Client = new Discord.Client({ disableMentions: 'all' })
+const client: Client = new Discord.Client({ intents: [Intents.FLAGS.GUILDS] })
 const app = express()
 const server: string = process.argv[2]
 
 const secretsFile = require('./secrets.json')
 const serverSecrets = secretsFile[server]
-import {serverModules} from './modules'
-
-import discordConfig from "./discord.json";
 
 const modules = serverModules[server]
-import {serverConfigs} from './config'
 const config = serverConfigs[server]
 
 let isEating = false
@@ -46,14 +46,14 @@ let end = false
 
 const time: number = 10
 
-const bot: PistonBot = <PistonBot>createBot({
+const bot: PistonBot = createBot({
   host: config.host,
   username: secretsFile.email,
   password: secretsFile.password,
   port: config.port,
   version: config.version,
   checkTimeoutInterval: 300 * 1000
-})
+}) as PistonBot
 
 const mcData: MinecraftData.IndexedData = require('minecraft-data')(bot.version)
 
@@ -72,9 +72,7 @@ bot.loadPlugin(autoEat)
 
 bot.on('spawn', function () {
   fs.writeFile('./time.txt', time.toString(), function (err: any) {
-    if (err) {
-      console.log(err)
-    }
+    console.log(err)
   })
 
   bot.autoEat.options = {
@@ -88,11 +86,9 @@ bot.on('spawn', function () {
   }
 })
 
-function text (username: string, message: string, whisper: boolean) {
+function text (username: string, message: string, whisper: boolean): void {
   fs.writeFile('./time.txt', time.toString(), function (err: any) {
-    if (err) {
-      console.log(err)
-    }
+    console.log(err)
   })
 
   let playerJoin = require('./data/playerjoin.json')
@@ -118,16 +114,19 @@ function text (username: string, message: string, whisper: boolean) {
 
   if (username === bot.username) return
 
-  const channel: Channel | undefined = client.channels.cache.get(config.bridge)
+  const channel: AnyChannel | undefined = client.channels.cache.get(config.bridge)
   if (channel !== undefined && !whisper) {
     const embed: MessageEmbed = new Discord.MessageEmbed()
       .setColor('#C970D9')
       .setURL(discordConfig.website)
       .addField(username.replace('@', '(at)'), message.replace('@', '(at)'), true)
       .setTimestamp()
-      .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
+      .setFooter({
+        text: 'PistonBot made by Pistonmaster',
+        iconURL: 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4'
+      })
     if (channel instanceof TextChannel) {
-      channel.send(embed).then(() => {
+      channel.send({ embeds: [embed] }).then(() => {
         console.log('Sent message to Discord')
       }).catch(() => {
         console.log('Failed to send message to Discord')
@@ -440,7 +439,7 @@ bot.on('whisper', function (username, message) {
   text(username, message, true)
 })
 
-if (modules.web) {
+if (modules.web != null) {
   app.use(helmet())
   app.use(pretty({ query: 'pretty' }))
 
@@ -458,11 +457,11 @@ bot.on('login', function () {
 })
 
 bot.once('spawn', () => {
-  if (modules.inventory) {
+  if (modules.inventory != null) {
     inventoryViewer(bot, { port: modules.inventory.port })
   }
 
-  if (modules.viewer) {
+  if (modules.viewer != null) {
     viewer(bot, { port: modules.viewer.port })
     // Draw the path followed by the bot
     const path = [bot.entity.position.clone()]
@@ -479,7 +478,7 @@ bot.once('spawn', () => {
       const weapon = checkWeapon(bot.inventory)
 
       if (weapon != null) {
-        await bot.equip(weapon, 'hand', (err) => {
+        await bot.equip(weapon, 'hand').catch(err => {
           if (err != null) {
             console.log(err)
           }
@@ -511,7 +510,7 @@ bot.once('spawn', () => {
       }
 
       if (totem !== null && totem.slot !== 45 && !isTotemInOffHand) {
-        await bot.equip(totem, 'off-hand', (err) => {
+        await bot.equip(totem, 'off-hand').catch(err => {
           if (err != null) {
             console.log(err)
           }
@@ -628,11 +627,11 @@ client.on('ready', async () => {
 
   await client.user.setPresence({
     status: 'online',
-    activity: {
+    activities: [{
       type: 'PLAYING',
       url: discordConfig.website,
       name: discordConfig.status
-    }
+    }]
   })
 })
 
@@ -700,25 +699,24 @@ client.on('message', async msg => {
 
             console.log(new ChatMessage(JSON.parse(String(pingResult.description))).toString())
 
-            const favicon = [new Discord.MessageAttachment('./' + server + '.png', server + '.png')]
+            const favicon = new Discord.MessageAttachment('./' + server + '.png', server + '.png')
             const embed = new Discord.MessageEmbed()
               .setTitle(server + '\'s Status')
               .setColor('#C970D9')
-              .attachFiles(favicon)
               .setThumbnail('attachment://' + server + '.png')
               .addField('Players:', pingResult.players.online.toString() + ' / ' + pingResult.players.max.toString())
               .addField('Motd:', replaceColor(new ChatMessage(JSON.parse(String(pingResult.description))).toString()))
-              .setFooter('PistonBot made by Pistonmaster', 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4')
+              .setFooter({ text: 'PistonBot made by Pistonmaster', iconURL: 'https://avatars0.githubusercontent.com/u/40795980?s=460&v=4' })
               .setURL(discordConfig.website)
               .setTimestamp(Date.now())
 
-            msg.channel.send(embed)
+            msg.channel.send({ embeds: [embed], files: [favicon] })
           }
         })
       } else if (msg.content.startsWith('_tps ' + server)) {
-        await msg.reply('Current tps: `' + bot.getTps() + '`')
+        await msg.reply(`Current tps: ${bot.getTps()}`)
       } else if (msg.content.startsWith('_servers')) {
-        await msg.channel.send('`' + server + '`')
+        await msg.channel.send(`\`${server}\``)
       } else if (msg.content.startsWith('_setupbridge ' + server)) {
       }
     } else {
