@@ -2297,10 +2297,10 @@ mineflayer-auto-eat@^2.0.0:
   dependencies:
     minecraft-data "^2.93.0"
 
-mineflayer-pathfinder@^1.6.1:
-  version "1.10.0"
-  resolved "https://registry.npmjs.org/mineflayer-pathfinder/-/mineflayer-pathfinder-1.10.0.tgz"
-  integrity sha512-2OZYoDv7GqiEKK33ql8BQeFIb8jvRo+GSTWE1ZP7BABH0w78WYLhAdKhMuUKfUFWfz/H5SnnYDDV/Zhvy0ReBg==
+mineflayer-pathfinder@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/mineflayer-pathfinder/-/mineflayer-pathfinder-2.0.0.tgz#f35af5277811daa577625ad883ec86a34ebbee66"
+  integrity sha512-DmWLNSeuOhQlqfzmphk+dNusoHVbAHuK0VLt96Upju9DzzgjThCrd90MlHkoS4qy5xJ/PUrtfmGS+8QgQ4y9zQ==
   dependencies:
     minecraft-data "^2.75.0"
     prismarine-block "^1.7.3"
