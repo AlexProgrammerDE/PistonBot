@@ -5,7 +5,7 @@ import { Window } from 'prismarine-windows'
 import { Item as PrismarineItem } from 'prismarine-item'
 import { Movements, pathfinder } from 'mineflayer-pathfinder'
 import Discord, { AnyChannel, Client, Intents, MessageEmbed, TextChannel } from 'discord.js'
-import { NewPingResult } from 'minecraft-protocol'
+import { NewPingResult, OldPingResult } from 'minecraft-protocol'
 import { ChatMessage } from 'prismarine-chat'
 
 import express from 'express'
@@ -23,10 +23,11 @@ import { serverConfigs } from './config'
 
 import ud from "urban-dictionary";
 
+import mc from "minecraft-protocol";
+
 const inventoryViewer = require('mineflayer-web-inventory')
 const tpsPlugin = require('mineflayer-tps')(require('mineflayer'))
 const armorManager = require('mineflayer-armor-manager')
-const mc = require('minecraft-protocol')
 const autoEat = require('mineflayer-auto-eat')
 const viewer = require('prismarine-viewer').mineflayer
 const { GoalBlock, GoalXZ, GoalY, GoalFollow } = require('mineflayer-pathfinder').goals
@@ -676,7 +677,9 @@ client.on('message', async msg => {
           host: config.host,
           port: config.port,
           version: config.version
-        }, function (err: Error, pingResult: NewPingResult) {
+        }, function (err: Error, pingResult: NewPingResult | OldPingResult) {
+          if (!isNewResult(pingResult)) return;
+
           if (err) {
             console.log(err)
             msg.reply('Sorry something went wrong. :(')
@@ -730,6 +733,10 @@ client.on('message', async msg => {
     }
   }
 })
+
+function isNewResult(pingResult: any): pingResult is NewPingResult {
+  return pingResult.latency !== undefined
+}
 
 client.login(secretsFile.token).catch(console.error)
 
