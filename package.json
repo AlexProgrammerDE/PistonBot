@@ -7,7 +7,8 @@
     "start": "ts-node index.ts 6b6t",
     "lint": "ts-standard",
     "fix": "ts-standard --fix",
-    "test": "ts-node index.ts localhost"
+    "test": "ts-node index.ts localhost",
+    "setupDev": "cp discord.json.example discord.json && cp secrets.json.example secrets.json"
   },
   "repository": {
     "type": "git",
