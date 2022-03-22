@@ -1,9 +1,10 @@
 import MinecraftData from 'minecraft-data'
-import { Bot, createBot } from 'mineflayer'
+import mineflayer, { Bot, createBot } from 'mineflayer'
 import { Entity, EntityType } from 'prismarine-entity'
 import { Window } from 'prismarine-windows'
 import { Item as PrismarineItem } from 'prismarine-item'
-import { Movements, pathfinder } from 'mineflayer-pathfinder'
+import {goals, Movements, pathfinder} from 'mineflayer-pathfinder'
+const {GoalBlock, GoalFollow, GoalXZ, GoalY} = goals
 import Discord, { AnyChannel, Client, Intents, MessageEmbed, TextChannel } from 'discord.js'
 import { NewPingResult, OldPingResult } from 'minecraft-protocol'
 import { ChatMessage } from 'prismarine-chat'
@@ -24,19 +25,21 @@ import { serverConfigs } from './config'
 import ud from "urban-dictionary";
 
 import mc from "minecraft-protocol";
+import ErrnoException = NodeJS.ErrnoException;
 
 const inventoryViewer = require('mineflayer-web-inventory')
-const tpsPlugin = require('mineflayer-tps')(require('mineflayer'))
+const tpsPlugin = require('mineflayer-tps')(mineflayer)
 const armorManager = require('mineflayer-armor-manager')
 const autoEat = require('mineflayer-auto-eat')
 const viewer = require('prismarine-viewer').mineflayer
-const { GoalBlock, GoalXZ, GoalY, GoalFollow } = require('mineflayer-pathfinder').goals
-const pretty = require('express-prettify')
 const client: Client = new Discord.Client({ intents: [Intents.FLAGS.GUILDS] })
 const app = express()
-const server: string = process.argv[2]
 
-const secretsFile = require('./secrets.json')
+type serverType = '7b7t'
+
+const server: serverType = process.argv[2] as serverType
+
+const secretsFile = await import('./secrets.json')
 const serverSecrets = secretsFile[server]
 
 const modules = serverModules[server]
@@ -72,7 +75,7 @@ bot.loadPlugin(armorManager)
 bot.loadPlugin(autoEat)
 
 bot.on('spawn', function () {
-  fs.writeFile('./time.txt', time.toString(), function (err: any) {
+  fs.writeFile('./time.txt', time.toString(), function (err: ErrnoException | null) {
     console.log(err)
   })
 
@@ -442,7 +445,6 @@ bot.on('whisper', function (username, message) {
 
 if (modules.web != null) {
   app.use(helmet())
-  app.use(pretty({ query: 'pretty' }))
 
   app.use('/', (req: any, res: { json: (arg0: any) => void }) => {
     res.json(require('./data/playerdata.json'))

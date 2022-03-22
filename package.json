@@ -2,7 +2,7 @@
   "name": "pistonbot",
   "version": "1.0.0",
   "description": "My own minecraft bot.",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "ts-node index.ts 6b6t",
     "lint": "ts-standard",
