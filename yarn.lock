@@ -2255,10 +2255,15 @@ minecraft-assets@^1.6.0:
   resolved "https://registry.npmjs.org/minecraft-assets/-/minecraft-assets-1.9.0.tgz"
   integrity sha512-KtvIRd9gcKlxbvrswGv1Ap9k7tVs//QW2ukp+8vJ28miYwkhUmYfjTZyElIG8KUXV/46wL2kDzLH8SJbXQ56Mg==
 
-minecraft-data@^2.100.1, minecraft-data@^2.106.0, minecraft-data@^2.109.0, minecraft-data@^2.111.0, minecraft-data@^2.113.1, minecraft-data@^2.114.1, minecraft-data@^2.118.0, minecraft-data@^2.62.1, minecraft-data@^2.65.0, minecraft-data@^2.74.0, minecraft-data@^2.75.0, minecraft-data@^2.84.0, minecraft-data@^2.88.0, minecraft-data@^2.93.0:
+minecraft-data@^2.100.1, minecraft-data@^2.106.0, minecraft-data@^2.109.0, minecraft-data@^2.111.0, minecraft-data@^2.113.1, minecraft-data@^2.114.1, minecraft-data@^2.118.0, minecraft-data@^2.62.1, minecraft-data@^2.65.0, minecraft-data@^2.74.0, minecraft-data@^2.75.0, minecraft-data@^2.88.0, minecraft-data@^2.93.0:
   version "2.220.0"
   resolved "https://registry.npmjs.org/minecraft-data/-/minecraft-data-2.220.0.tgz"
   integrity sha512-6/1TxrX9jf8z8aRxWtB9IiDy6O3t6Yor/qGxCDB8ibahf/Ss5HNaPjjjjATLrdT2KrIWywv5oc4eSZ2bfXlDmQ==
+
+minecraft-data@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/minecraft-data/-/minecraft-data-3.0.0.tgz#ee99428b812d9ea295e6cfc21e243b761f9c128b"
+  integrity sha512-8gChk4VUYky3XfMRO+YE1eS7OHC7uzEbxuosav7f5P8rewJ/8XNIPTmXYZOWnC2MoYCFwHRNHhwpt2YuxsDYqw==
 
 minecraft-folder-path@^1.2.0:
   version "1.2.0"
