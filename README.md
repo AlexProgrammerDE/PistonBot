@@ -11,6 +11,4 @@ My own minecraft bot.
 ---
 
 Links:
-
-* Website: https://bot.pistonmaster.net/
 * Discord: https://discord.gg/CDrcxzH
