@@ -2344,7 +2344,7 @@ minecraft-assets@^1.6.0:
   resolved "https://registry.npmjs.org/minecraft-assets/-/minecraft-assets-1.9.0.tgz"
   integrity sha512-KtvIRd9gcKlxbvrswGv1Ap9k7tVs//QW2ukp+8vJ28miYwkhUmYfjTZyElIG8KUXV/46wL2kDzLH8SJbXQ56Mg==
 
-minecraft-data@^2.100.1, minecraft-data@^2.106.0, minecraft-data@^2.109.0, minecraft-data@^2.111.0, minecraft-data@^2.113.1, minecraft-data@^2.114.1, minecraft-data@^2.118.0, minecraft-data@^2.62.1, minecraft-data@^2.65.0, minecraft-data@^2.74.0, minecraft-data@^2.75.0, minecraft-data@^2.88.0, minecraft-data@^2.93.0:
+minecraft-data@^2.100.1, minecraft-data@^2.106.0, minecraft-data@^2.109.0, minecraft-data@^2.111.0, minecraft-data@^2.113.1, minecraft-data@^2.114.1, minecraft-data@^2.118.0, minecraft-data@^2.62.1, minecraft-data@^2.65.0, minecraft-data@^2.74.0, minecraft-data@^2.75.0, minecraft-data@^2.88.0:
   version "2.220.0"
   resolved "https://registry.npmjs.org/minecraft-data/-/minecraft-data-2.220.0.tgz"
   integrity sha512-6/1TxrX9jf8z8aRxWtB9IiDy6O3t6Yor/qGxCDB8ibahf/Ss5HNaPjjjjATLrdT2KrIWywv5oc4eSZ2bfXlDmQ==
@@ -2389,12 +2389,10 @@ mineflayer-armor-manager@^1.4.1:
     minecraft-data "^2.65.0"
     rambda "^6.5.3"
 
-mineflayer-auto-eat@^2.0.0:
-  version "2.3.3"
-  resolved "https://registry.npmjs.org/mineflayer-auto-eat/-/mineflayer-auto-eat-2.3.3.tgz"
-  integrity sha512-fy0Jjd9dcnjkcucPcs2uN13wYF4KChEby11pO6Iq3SyRDqjHuKa7U/DKbo5MZaTmucBMRPE1+ETl3kWEI/FCjg==
-  dependencies:
-    minecraft-data "^2.93.0"
+mineflayer-auto-eat@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/mineflayer-auto-eat/-/mineflayer-auto-eat-3.0.1.tgz#c8f8c3fc2cca76cdf37eb8a668aeab8e780a9de9"
+  integrity sha512-gdT9CP+xqA2m4Q8m3Ua4a6qJi2sAtWLKI5/PehlT0bKI72ZbnurKmiL6IJXrIg0faCm3GTafLkoWYsT/2fUsnw==
 
 mineflayer-pathfinder@^2.0.0:
   version "2.0.0"

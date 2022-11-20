@@ -33,7 +33,7 @@
     "minecraft-protocol": "^1.25.0",
     "mineflayer": "^4.0.0",
     "mineflayer-armor-manager": "^1.4.1",
-    "mineflayer-auto-eat": "^2.0.0",
+    "mineflayer-auto-eat": "^3.0.0",
     "mineflayer-pathfinder": "^2.0.0",
     "mineflayer-tps": "^1.0.1",
     "mineflayer-web-inventory": "^1.4.0",
