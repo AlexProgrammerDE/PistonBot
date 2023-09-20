@@ -1477,9 +1477,9 @@ etag@~1.8.1:
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
 express-prettify@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/express-prettify/-/express-prettify-0.1.1.tgz"
-  integrity sha512-AtLYJhseS9bIwkG+tqSn4OKr7RJ8fxJ+/P8SDZ9XdcMiGPvi633c2YC8QaHJKokyffd6sHxSuyZ/eWwDX6kOpw==
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/express-prettify/-/express-prettify-0.1.2.tgz#a07938e21601e9b184a384939beb6227cac7ce6d"
+  integrity sha512-3dK014wFtO0nLgrtSNMz8j2r7dgBaNBPksyMnPtr2DOHm+yxKoFLWxASJk6ctSS4V0H6LkmdhExE9AOVr0lozA==
 
 express@^4.17.1:
   version "4.17.3"
