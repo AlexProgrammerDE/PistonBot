@@ -306,10 +306,10 @@
     "@types/mime" "^1"
     "@types/node" "*"
 
-"@types/urban-dictionary@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@types/urban-dictionary/-/urban-dictionary-3.0.0.tgz#6a10f692fd872b03758bcde3308ec6791c567a15"
-  integrity sha512-zGc/rL7a11fSf98MsVKnTLQ0s3BukUrdHRWe4Hf4jj3psTVqBIibv7cKUF23We3qDn29/2mYeo56jLZjnm5ZzA==
+"@types/urban-dictionary@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@types/urban-dictionary/-/urban-dictionary-3.0.2.tgz#a2466578e00b36e27dd07e287fbe1944fb456667"
+  integrity sha512-JRzGHobtpGu8fepWfoxKgiquPkaOxAKp60xDpyjgJS7RVqVMnVg27Xz7kIllH2n4zyB+HWUhdoeZkTLPBN8vLg==
 
 "@types/ws@^8.5.3":
   version "8.5.3"
