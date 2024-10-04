@@ -2344,7 +2344,7 @@ minecraft-assets@^1.6.0:
   resolved "https://registry.npmjs.org/minecraft-assets/-/minecraft-assets-1.9.0.tgz"
   integrity sha512-KtvIRd9gcKlxbvrswGv1Ap9k7tVs//QW2ukp+8vJ28miYwkhUmYfjTZyElIG8KUXV/46wL2kDzLH8SJbXQ56Mg==
 
-minecraft-data@^2.100.1, minecraft-data@^2.106.0, minecraft-data@^2.109.0, minecraft-data@^2.111.0, minecraft-data@^2.113.1, minecraft-data@^2.114.1, minecraft-data@^2.118.0, minecraft-data@^2.62.1, minecraft-data@^2.65.0, minecraft-data@^2.74.0, minecraft-data@^2.75.0, minecraft-data@^2.88.0, minecraft-data@^2.93.0:
+minecraft-data@^2.100.1, minecraft-data@^2.106.0, minecraft-data@^2.109.0, minecraft-data@^2.111.0, minecraft-data@^2.113.1, minecraft-data@^2.114.1, minecraft-data@^2.118.0, minecraft-data@^2.62.1, minecraft-data@^2.74.0, minecraft-data@^2.75.0, minecraft-data@^2.88.0, minecraft-data@^2.93.0:
   version "2.220.0"
   resolved "https://registry.npmjs.org/minecraft-data/-/minecraft-data-2.220.0.tgz"
   integrity sha512-6/1TxrX9jf8z8aRxWtB9IiDy6O3t6Yor/qGxCDB8ibahf/Ss5HNaPjjjjATLrdT2KrIWywv5oc4eSZ2bfXlDmQ==
@@ -2353,6 +2353,11 @@ minecraft-data@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/minecraft-data/-/minecraft-data-3.0.0.tgz#ee99428b812d9ea295e6cfc21e243b761f9c128b"
   integrity sha512-8gChk4VUYky3XfMRO+YE1eS7OHC7uzEbxuosav7f5P8rewJ/8XNIPTmXYZOWnC2MoYCFwHRNHhwpt2YuxsDYqw==
+
+minecraft-data@^3.38.0:
+  version "3.69.0"
+  resolved "https://registry.yarnpkg.com/minecraft-data/-/minecraft-data-3.69.0.tgz#7afe6b1396a3e2d66f6cdc76232f464981f6a9d1"
+  integrity sha512-FGpjH/8ABfIuHm53253MZZVLwfVgLuRl4wrYz91TNoT14a+pMPH7igNxdpBmKayhiO7VO0ox/ZISkCOj6S/isA==
 
 minecraft-folder-path@^1.2.0:
   version "1.2.0"
@@ -2381,13 +2386,12 @@ minecraft-protocol@^1.25.0, minecraft-protocol@^1.31.0:
     uuid-1345 "^1.0.1"
     yggdrasil "^1.4.0"
 
-mineflayer-armor-manager@^1.4.1:
-  version "1.4.2"
-  resolved "https://registry.npmjs.org/mineflayer-armor-manager/-/mineflayer-armor-manager-1.4.2.tgz"
-  integrity sha512-qVBS6wSgDuVppPYgdGK3NmQBtnciMI96JirDCGwtGN9cGFACIBHYIvumQ3boeK1Zj0/3u3ojzZFFWSgOK3Jwkg==
+mineflayer-armor-manager@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/mineflayer-armor-manager/-/mineflayer-armor-manager-2.0.1.tgz#f08b579d1ddf0051a9a7ee90017ec1fd38ea15ad"
+  integrity sha512-csxRcFOrif1pu9TyUVR8xfmzRxwsxLSfcFVQDnCfhhV5U0Cuy5b9GjFWM4036a75XaQ94qkZklXgBDAsgJMGaQ==
   dependencies:
-    minecraft-data "^2.65.0"
-    rambda "^6.5.3"
+    minecraft-data "^3.38.0"
 
 mineflayer-auto-eat@^2.0.0:
   version "2.3.3"
@@ -2970,11 +2974,6 @@ railroad-diagrams@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/railroad-diagrams/-/railroad-diagrams-1.0.0.tgz"
   integrity sha1-635iZ1SN3t+4mcG5Dlc3RVnN234=
-
-rambda@^6.5.3:
-  version "6.9.0"
-  resolved "https://registry.npmjs.org/rambda/-/rambda-6.9.0.tgz"
-  integrity sha512-yosVdGg1hNGkXPzqGiOYNEpXKjEOxzUCg2rB0l+NKdyCaSf4z+i5ojbN0IqDSezMMf71YEglI+ZUTgTffn5afw==
 
 randexp@0.4.6:
   version "0.4.6"
